@@ -1,0 +1,6 @@
+## ignore file ##
+.test
+*.iml
+*.xml
+*.DS_Store
+/.idea

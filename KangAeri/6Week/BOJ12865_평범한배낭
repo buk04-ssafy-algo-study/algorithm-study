@@ -1,0 +1,41 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Main {
+	public static void main(String[] args) throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n=0,k=0,i=0,j=0;
+		int[][] dp;
+		String[] in;
+		int[] weight;
+		int[] val;
+		in = br.readLine().split(" ");	
+		n = Integer.parseInt(in[0]);
+		k = Integer.parseInt(in[1]);
+		weight = new int[n+1];
+		val = new int[n+1];
+		dp = new int[n+1][k+1];
+
+		for(i=1; i<=n; i++) {
+			in = br.readLine().split(" ");
+			weight[i]=Integer.parseInt(in[0]);
+			val[i] = Integer.parseInt(in[1]);
+		}
+
+		for(i=1; i<=n; i++) {
+			for(j=1; j<=k; j++) {
+				 if (weight[i] <=j) {
+					 dp[i][j] = Integer.max(dp[i - 1][j], dp[i - 1][j - weight[i]] + val[i]);
+				 } else {
+					 dp[i][j] = dp[i - 1][j];
+				 }
+			}
+		}
+		
+		System.out.println(dp[n][k]);
+
+	}
+	
+}
+
