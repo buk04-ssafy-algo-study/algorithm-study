@@ -29,7 +29,7 @@ public class Main_골드4_1253_좋다 {
 
     static int findGood() {
         int count = 0;
-        for (int i = 0; i < N; i++) {   // 첫, 두번째 원소는 건너뜀
+        for (int i = 0; i < N; i++) {
             long number = numbers[i];
 
             int start = 0;  // 처음 따져볼 수의 앞 수 = 제일 첫 수
