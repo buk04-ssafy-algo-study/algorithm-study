@@ -33,11 +33,6 @@ public class Main_실버3_1021_회전하는큐 {
         }
     }
 
-    static void rotateQueue(String direction) { // 큐(덱) 돌리는 함수
-        if (direction.equals("left")) queue.offer(queue.poll());
-        else if (direction.equals("right")) queue.offerFirst(queue.pollLast());
-    }
-
     private static int findWillPoll(int willPoll) { // 뽑아야하는 수 인덱스 찾는 함수
         int willPollIdx = 0;    // 뽑아낼 원소의 큐에서의 위치
         Iterator iter = queue.iterator();
@@ -47,6 +42,11 @@ public class Main_실버3_1021_회전하는큐 {
         }
 
         return willPollIdx;
+    }
+
+    static void rotateQueue(String direction) { // 큐(덱) 돌리는 함수
+        if (direction.equals("left")) queue.offer(queue.poll());
+        else if (direction.equals("right")) queue.offerFirst(queue.pollLast());
     }
 
     static int solve() {
