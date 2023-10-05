@@ -17,11 +17,11 @@ int main() {
     
     for(tcase=0; tcase<t; tcase++){  //for- tcases begin
 		
-		scanf("%d", &rel);
+	scanf("%d", &rel);
     	for(i=0;i<=rel*2;i++){  // 사람 수 <= rel*2
-		    par[i] =i;  //부모 번호 저장 : 초기에-각 원소는 자기자신 그룹의 머리 & 각 그룹 멤버 1명--> 부모==자기자신 
-		    cnt[i]=1;   //각 그룹의 멤버 1명이라 ....
-		}
+	    par[i] =i;  //부모 번호 저장 : 초기에-각 원소는 자기자신 그룹의 머리 & 각 그룹 멤버 1명--> 부모==자기자신 
+	    cnt[i]=1;   //각 그룹의 멤버 1명이라 ....
+	}
 		
     	map<string, int> m; // map사용 
         
@@ -42,36 +42,36 @@ int main() {
     		flag=num;// flag: 새 사람한테 줄 번호 == 맵 원소 개수
     		m.insert({p2, num}); 
     		if(flag!=m.size()){ //사람 p2처음 들어왔으면 : 
-    		   	b=num++; // b<- num 하고 , num++ 로 다음번호 만들어둠
+    		   b=num++; // b<- num 하고 , num++ 로 다음번호 만들어둠
     		}else{ //사람 p1 들어온적 있으면 :
     		    b=m[p2];   //b<- 맵에 저장해뒀던 p2 번호
     		}
     		
     		//////union///
-			while(par[a]!=a){ //부모 번호 타고 올라감
-				a = par[a]; 
-			} // a: a가 속한 그룹의 머리 번호 저장
-			while(par[b]!=b){ //부모 번호 타고 올라감
-				b = par[b]; 
-			} // b: b가 속한 그룹의 머리 번호 저장
-			
+		while(par[a]!=a){ //부모 번호 타고 올라감
+			a = par[a]; 
+		} // a: a가 속한 그룹의 머리 번호 저장
+		while(par[b]!=b){ //부모 번호 타고 올라감
+			b = par[b]; 
+		} // b: b가 속한 그룹의 머리 번호 저장
+		
 			
             ///check 2p & print
-			if(b>a){ //둘이 다른 그룹 : 한방향으로만 합쳐지는거 막으려고 번호비교함.. if(b!=a)~else{} 가능 
-	            par[b] =a; //머리가 b인 그룹을 머리가 a인 그룹으로 합침 
-	            cnt[a]+=cnt[b]; //유니온할 때 두 그룹 멤버 수도 합침 
-	            printf("%d\n", cnt[a]);
+		if(b>a){ //둘이 다른 그룹 : 한방향으로만 합쳐지는거 막으려고 번호비교함.. if(b!=a)~else{} 가능 
+			par[b] =a; //머리가 b인 그룹을 머리가 a인 그룹으로 합침 
+			cnt[a]+=cnt[b]; //유니온할 때 두 그룹 멤버 수도 합침 
+			printf("%d\n", cnt[a]);
 	        } else if(b<a){ // 둘이 다른 그룹 
-	            par[a] =b; 
-				cnt[b]+=cnt[a];  
-				printf("%d\n", cnt[b]);
+	            	par[a] =b; 
+			cnt[b]+=cnt[a];  
+			printf("%d\n", cnt[b]);
 				
 	        } else{ // 이미 같은 그룹인 상황 .. 
-	            printf("%d\n", cnt[a]);
+			printf("%d\n", cnt[a]);
 	        }
 	
-		} //end for- rel
-	} //end for-tcases
+	} //end for- rel
+    } //end for-tcases
     
     return 0;
 }
