@@ -1,0 +1,303 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+
+	static int N, M;
+	static int[][] map;
+	static int maxNum = Integer.MIN_VALUE;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		N = Integer.parseInt(st.nextToken()); // 세로
+		M = Integer.parseInt(st.nextToken()); // 가로
+		
+		map = new int[N][M];
+		for(int i=0; i<N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for(int j=0; j<M; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<M; j++) {
+				// 막대
+				N1_1(i, j);
+				N1_2(i, j);
+				
+				// 네모
+				N2(i, j);
+				
+				// 7자
+				N3_1(i, j);
+				N3_2(i, j);
+				N3_3(i, j);
+				N3_4(i, j);
+				N3_5(i, j);
+				N3_6(i, j);
+				N3_7(i, j);
+				N3_8(i, j);
+				
+				// 지그재그
+				N4_1(i, j);
+				N4_2(i, j);
+				N4_3(i, j);
+				N4_4(i, j);
+				
+				// 凸
+				N5_1(i, j);
+				N5_2(i, j);
+				N5_3(i, j);
+				N5_4(i, j);
+			}
+		}
+		System.out.println(maxNum);
+	}// main
+	
+	// 막대
+	public static void N1_1(int r, int c) {
+		// 가로 막대
+		int sum = map[r][c];
+		if(c+1 >= M) return;
+		sum += map[r][c+1];
+		if(c+2 >= M) return;
+		sum += map[r][c+2];
+		if(c+3 >= M) return;
+		sum += map[r][c+3];
+		
+		maxNum = Math.max(maxNum, sum);
+	}
+	
+	public static void N1_2(int r, int c) {
+		// 세로 막대
+		int sum = map[r][c];
+		if(r+1 >= N) return;
+		sum += map[r+1][c];
+		if(r+2 >= N) return;
+		sum += map[r+2][c];
+		if(r+3 >= N) return;
+		sum += map[r+3][c];
+		
+		maxNum = Math.max(maxNum, sum);
+	}
+	
+	// 네모
+    public static void N2(int r, int c) {
+		
+    	if(r+1 >= N || c+1 >= M) return;
+    	int sum =0;
+    	sum = map[r][c] + map[r+1][c] + map[r][c+1] + map[r+1][c+1];
+    	maxNum = Math.max(maxNum, sum);
+    	
+	}
+    
+    // 7자
+    public static void N3_1(int r, int c) {
+    	// 1
+    	int sum= map[r][c];
+    	if(r+1 >= N) return;
+    	sum+= map[r+1][c];
+    	if(r+2 >= N) return;
+    	sum+= map[r+2][c];
+    	if(r+2 >= N || c+1 >= M) return;
+    	sum+= map[r+2][c+1];
+    	
+    	maxNum = Math.max(maxNum, sum);
+    }
+    
+public static void N3_2(int r, int c) {
+	// 2
+	int sum= map[r][c];
+	if(r+1 >= N) return;
+	sum+= map[r+1][c];
+	if(r+2 >= N) return;
+	sum+= map[r+2][c];
+	if(r+2 >= N || c-1 < 0) return;
+	sum+= map[r+2][c-1];
+	
+	maxNum = Math.max(maxNum, sum);
+    }
+public static void N3_3(int r, int c) {
+	// 3
+	int sum= map[r][c];
+	if(r+1 >= N) return;
+	sum+= map[r+1][c];
+	if(c+1 >= M) return;
+	sum+= map[r][c+1];
+	if(c+2 >= M) return;
+	sum+= map[r][c+2];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N3_4(int r, int c) {
+	 
+	// 4
+	int sum= map[r][c];
+	if(c+1 >= M) return;
+	sum+= map[r][c+1];
+	if(c+2 >= M) return;
+	sum+= map[r][c+2];
+	if(r+1 >= N || c+2 >= M) return;
+	sum+= map[r+1][c+2];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N3_5(int r, int c) {
+	// 5
+	int sum= map[r][c];
+	if(c+1 >= M) return;
+	sum+= map[r][c+1];
+	if(r+1 >= N || c+1 >= M) return;
+	sum+= map[r+1][c+1];
+	if(r+2 >= N || c+1 >= M) return;
+	sum+= map[r+2][c+1];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N3_6(int r, int c) {
+	// 6
+	int sum= map[r][c];
+	if(c+1 >= M) return;
+	sum+= map[r][c+1];
+	if(r+1 >= N) return;
+	sum+= map[r+1][c];
+	if(r+2 >= N) return;
+	sum+= map[r+2][c];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N3_7(int r, int c) {
+	// 7
+	int sum= map[r][c];
+	if(c+1 >= M) return;
+	sum+= map[r][c+1];
+	if(c+2 >= M) return;
+	sum+= map[r][c+2];
+	if(r-1 < 0 || c+2 >= M) return;
+	sum+= map[r-1][c+2];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N3_8(int r, int c) {
+	// 8
+	int sum= map[r][c];
+	if(r+1 >= N) return;
+	sum+= map[r+1][c];
+	if(r+1 >= N || c+1 >= M) return;
+	sum+= map[r+1][c+1];
+	if(r+1 >= N || c+2 >= M) return;
+	sum+= map[r+1][c+2];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+    // 지그재그
+    public static void N4_1(int r, int c) {
+    	// 1
+    	int sum= map[r][c];
+    	if(r+1 >= N) return;
+    	sum += map[r+1][c];
+    	if(r+1 >= N || c+1 >= M) return;
+    	sum += map[r+1][c+1];
+    	if(r+2 >= N || c+1 >= M) return;
+    	sum += map[r+2][c+1];
+    	
+    	maxNum = Math.max(maxNum, sum);
+    }
+    
+public static void N4_2(int r, int c) {
+	// 2
+	int sum= map[r][c];
+	if(r+1 >= N) return;
+	sum += map[r+1][c];
+	if(r+1 >= N || c-1 < 0) return;
+	sum += map[r+1][c-1];
+	if(r+2 >= N || c-1 < 0) return;
+	sum += map[r+2][c-1];
+	
+	maxNum = Math.max(maxNum, sum);
+    }
+
+public static void N4_3(int r, int c) {
+	// 3
+	int sum= map[r][c];
+	if(c+1 >= M) return;
+	sum += map[r][c+1];
+	if(r-1 < 0 || c+1 >= M) return;
+	sum += map[r-1][c+1];
+	if(r-1 < 0 || c+2 >= M) return;
+	sum += map[r-1][c+2];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+
+public static void N4_4(int r, int c) {
+	// 4
+	int sum= map[r][c];
+	if(c+1 >= M) return;
+	sum += map[r][c+1];
+	if(r+1 >= N || c+1 >= M) return;
+	sum += map[r+1][c+1];
+	if(r+1 >= N || c+2 >= M) return;
+	sum += map[r+1][c+2];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+ 
+    
+    // 凸
+public static void N5_1(int r, int c) {
+	// 1
+	int sum= map[r][c];
+//	System.out.println("r: "+r + " / "+ "c: "+c+ " / map[r][c] : "+ map[r][c]);
+	if(c+1 >= M) return;
+	sum += map[r][c+1];
+//	System.out.println("r: "+r + " / "+ "c+1: "+(c+1) + " / map[r][c+1] : " +map[r][c+1]);
+	if(r+1 >= N || c+1 >= M) return;
+	sum += map[r+1][c+1];
+//	System.out.println("r+1: "+(r+1) + " / "+ "c+1: "+(c+1) + " / map[r+1][c+1] : "+map[r+1][c+1]);
+	if(c+2 >= M) return;
+	sum += map[r][c+2];
+//	System.out.println("r: "+r + " / "+ "c+2: "+(c+2) + " / map[r][c+2] : "+map[r][c+2]);
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N5_2(int r, int c) {
+	// 2
+	int sum= map[r][c];
+	if(c+1 >= M) return;
+	sum += map[r][c+1];
+	if(r-1 < 0 || c+1 >= M) return;
+	sum += map[r-1][c+1];
+	if(c+2 >= M) return;
+	sum += map[r][c+2];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N5_3(int r, int c) {
+	// 3
+	int sum= map[r][c];
+	if(r+1 >= N) return;
+	sum += map[r+1][c];
+	if(r+1 >= N || c-1 < 0) return;
+	sum += map[r+1][c-1];
+	if(r+2 >= N) return;
+	sum += map[r+2][c];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+public static void N5_4(int r, int c) {
+	// 4
+	int sum= map[r][c];
+	if(r+1 >= N) return;
+	sum += map[r+1][c];
+	if(r+1 >= N || c+1 >= M) return;
+	sum += map[r+1][c+1];
+	if(r+2 >= N) return;
+	sum += map[r+2][c];
+	
+	maxNum = Math.max(maxNum, sum);
+}
+
+}
