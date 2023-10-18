@@ -17,7 +17,7 @@ public class Main_1764_듣보잡 {
         // 들어본 적 없는 사람의 이름을 저장
         HashMap<String, Integer> map = new HashMap<>();
         // 듣도보도 못한 사람을 저장할 리스트
-        // Priory Queue를 선언해도 됨
+        // Priority Queue를 선언해도 됨
         List<String> result = new ArrayList<>();
 
         for(int i =0; i<N; i++){
