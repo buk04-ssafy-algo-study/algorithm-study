@@ -9,6 +9,8 @@
  * 	2-1. 특정 노드의 인접 리스트 조회하면서 방문  
  * 	2-2. 모든 인접 노드를 방문한 노드일 때 재귀 종료
  * 	2-3. 2-2 시점이 2-1 끝났을 때임! 따라서 2-1 for문 직후에 max값 업데이트
+ * 3. 트리는 싸이클이 없으므로 갔던 곳 false로 되돌리지 않아도 됨
+ * 4. 정점마다 dfs 시작할 때마다 방문 배열 새로 선언해야 초기화한 상태로 진행됨!
  * 
  * */
 import java.io.BufferedReader;
@@ -61,7 +63,6 @@ public class Main {
 			visited = new boolean[n+1];
 			visited[i] = true;
 			dfs(i, 0);	
-			visited[i] = false;
 		}
 		System.out.println(result);
 	}
@@ -74,7 +75,6 @@ public class Main {
 			
 			visited[tmp.get(i).num] = true;
 			dfs(tmp.get(i).num, sum+tmp.get(i).v);
-			visited[tmp.get(i).num] = false;
 		}
 		result = Math.max(result, sum);
 	}
