@@ -1,6 +1,7 @@
 package _14;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,8 @@ class Solution {
 		String today = "2022.05.19";
 		String[] terms = new String[] {"A 6", "B 12", "C 3"};
 		String[] privacies = new String[] {"2021.05.02 A", "2021.07.01 B", "2022.02.19 C", "2022.02.20 C"};
-		solution(today, terms, privacies);
+		int [] a  = solution(today, terms, privacies);
+		System.out.println(Arrays.toString(a));
 	}
 	
     static public int[] solution(String today, String[] terms, String[] privacies) {
@@ -30,7 +32,7 @@ class Solution {
 			String[] date = tmp[0].split("\\.");
 			int cal = Integer.parseInt(date[0]) * 28 * 12 + Integer.parseInt(date[1]) * 28 + Integer.parseInt(date[2]);
 			int pr = map.get(tmp[1]);
-			if((cal + pr * 28) > start) {
+			if((cal + pr * 28) <= start) {
 				list.add(i + 1);
 			}
 		}
