@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
@@ -36,13 +35,11 @@ public class Main_골드3_1238_파티 {
     public static void main(String[] args) throws IOException {
         init();
         int answer = Integer.MIN_VALUE;
+        int[] backDistArr = dijkstra(X);    // 일단 파티 장소에서 출발지로 가는 거리 먼저 구함
         for (int n = 1; n <= N; n++) {    // 1번부터 N번 학생까지 반복
-            int goDist = dijkstra(n, X);
-            int backDist = dijkstra(X, n);
-//            System.out.println(goDist + backDist);
+            int goDist = dijkstra(n)[X];    // n번을 출발지로 해서 파티장까지 가는 최단 경로 구함
+            int backDist = backDistArr[n];  // 파티 장소에서 n번 학생 집 가는 최단 경로
             answer = Math.max(answer, goDist+backDist);
-//            System.out.println(answer);
-//            System.out.println("==========");
         }
         System.out.println(answer);
     }
@@ -53,10 +50,10 @@ public class Main_골드3_1238_파티 {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         X = Integer.parseInt(st.nextToken());
-        adjRoad = new ArrayList<ArrayList<Road>>();
+        adjRoad = new ArrayList<>();
 
         for (int i = 0; i < M+1; i++) {
-            adjRoad.add(new ArrayList<Road>());
+            adjRoad.add(new ArrayList<>());
         }
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
@@ -67,9 +64,9 @@ public class Main_골드3_1238_파티 {
         }
     }
 
-    static int dijkstra(int from, int to) {
-        int[] dist = new int[M+1];
-        for (int i = 0; i < M+1; i++) dist[i] = Integer.MAX_VALUE;
+    static int[] dijkstra(int from) {
+        int[] dist = new int[N+1];
+        for (int i = 0; i < N+1; i++) dist[i] = Integer.MAX_VALUE;
         dist[from] = 0; // 출발한 마을 거리는 0
         PriorityQueue<Road> pq = new PriorityQueue<>();
         pq.offer(new Road(from, 0));
@@ -86,10 +83,8 @@ public class Main_골드3_1238_파티 {
                 }
             }
         }
-//        System.out.println("from : " + from + ", to : " + to);
-//        System.out.println(Arrays.toString(dist));
 
-        return dist[to];
+        return dist;
     }
 
 }
