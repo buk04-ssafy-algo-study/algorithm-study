@@ -14,13 +14,14 @@ public class Main_리모컨OK {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        StringTokenizer st;
+        StringTokenizer st = null;
         
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
         
         btnCheck = new boolean[10];
-        st = new StringTokenizer(br.readLine());
+        if(M != 0) st = new StringTokenizer(br.readLine());
+        
         for (int i = 0; i < M; i++) {
         	int n = Integer.parseInt(st.nextToken());
 			btnCheck[n] = true;
