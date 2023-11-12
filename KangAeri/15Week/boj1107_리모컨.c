@@ -22,17 +22,17 @@ int main(){
 		scanf("%d",&j);
 		channel[j]=0;
 	}
-	///////////////
+	/////////////
 	min=abs(tarnum-100);
 	if(brk<10){
-		for(i=0; i<=999900; i++){
+		for(i=0; i<=tarnum*2+100; i++){
 			snprintf(tmp, 10, "%d",i);
-			for(j=0; j<strlen(tmp); j++){	
+			for(j=0; j<strlen(tmp); j++){	// 교집 체크 .break 안되면 j==i길이
 				if(channel[tmp[j]-48]!=1){
 					break;
 				}
 			}
-			if(j>=strlen(tmp)){
+			if(j>=strlen(tmp)){ // 다고장안났으면
 				ans=strlen(tmp) + abs(tarnum-i);
 				if(ans<min){
 					min=ans;

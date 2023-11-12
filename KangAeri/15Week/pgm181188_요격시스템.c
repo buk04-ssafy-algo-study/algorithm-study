@@ -28,9 +28,9 @@ void merge(int l, int r){
     while(x<=p && y<=r){
         if(arr[x].l<arr[y].l){
             tmp[i++]=arr[x++];
-        } else if(arr[x].l>arr[y].l){
+        } else if(arr[x].l>arr[y].l){ //구간시작점기준 정렬
             tmp[i++]= arr[y++];
-        } else{
+        } else{//구간시작점 같으면 구간끝나는점기준 정렬
             if(arr[x].r<arr[y].r){
                 tmp[i++]=arr[x++];
             } else{
@@ -71,21 +71,24 @@ int solution(int** targets, size_t targets_rows, size_t targets_cols) {
         arr[i].r = targets[i][1];
     }
     
-    msort(0,targets_rows-1);
+    msort(0,targets_rows-1);//정렬
     i=0;
+    //////////////////////////////
+    
     while(i<len){
-        lbound=arr[i].l;
-        rbound=arr[i].r;
-        answer++;
-        for(j=i+1; j<len;j++){
+        lbound=arr[i].l; //lbound:같이요격하는애들 구간시작점 최댓값
+        rbound=arr[i].r; //rbound:같이요격하는애들 구간끝점 최솟값
+        answer++; //일단미사일(i)있으면 요격 한번 하는거
+        for(j=i+1; j<len;j++){ //i 요격할 때 같이요격할수있는애들 최대로 찾음
             if(arr[j].l<rbound){
-                lbound=arr[j].l;
-                rbound=min(rbound, arr[j].r);
+                lbound=arr[j].l; //lbound 갱신
+                rbound=min(rbound, arr[j].r); //rbound 갱신
             } else{     
                 break;
             }
         }
-        i=j;
+        //여기서 j : i요격할 때 요격안된 (정렬순서상)첫번째애
+        i=j;// 
     }
 
     return answer;

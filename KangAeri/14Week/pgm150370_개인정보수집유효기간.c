@@ -2,11 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 int* solution(const char* today, const char* terms[], size_t terms_len, const char* privacies[], size_t privacies_len) {
 
-    int i=0, j=0, idx=0, flag=0;
-    int todayY=0, todayM=0, todayD=0, yy=0,mm=0,dd=0, tt=0;
+    int i=0, j=0, idx=0, flag=0, todayY=0, todayM=0, todayD=0, yy=0,mm=0,dd=0, tt=0;
     char tmp[15];
     char* ptr;
     int* answer = (int*)malloc(sizeof(int)*privacies_len);
@@ -18,7 +16,6 @@ int* solution(const char* today, const char* terms[], size_t terms_len, const ch
     todayY = atoi(strtok(today, "."));   
     todayM = atoi(strtok(NULL, "."));
     todayD = atoi(strtok(NULL, " "));
-    //printf("%d/%d/%d/\n", todayY,todayM,todayD);
     // get terms info
     for(i=0; i<terms_len; i++){ //A:0...
          j = *(strtok(terms[i]," "))-65;
@@ -31,8 +28,8 @@ int* solution(const char* today, const char* terms[], size_t terms_len, const ch
         dd = atoi(strtok(NULL, " "));
         tt = term[*(strtok(NULL," ")) -65];
         
-        dd+= tt*28-1;
-        mm+= ((dd-1)/28);
+        dd+= tt*28-1;	//유효기간 날수로 바꿔서 더함 
+        mm+= ((dd-1)/28); 
         if(dd%28==0){
             dd=28;
         } else{
@@ -44,7 +41,7 @@ int* solution(const char* today, const char* terms[], size_t terms_len, const ch
         } else{
             mm%=12;
         }
-        //printf("%d %d %d\n", yy, mm, dd);         
+    
         flag=0;
         if(yy==todayY){
             if(mm==todayM){
@@ -59,7 +56,6 @@ int* solution(const char* today, const char* terms[], size_t terms_len, const ch
         }
     	
 		if(flag==1){
-           // printf("(%d)",i+1);
 			answer[idx++]=i+1;
 		}
     	
