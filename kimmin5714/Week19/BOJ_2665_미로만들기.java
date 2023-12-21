@@ -11,7 +11,6 @@
 
 //*습관적으로 방문처리 하지 않기
 //*습관적으로 종료조건 넣지 않기 -> 마지막 방을 여러 번 갱신할 수도 있으므로 큐가 빌 때까지 반복해야 함.
-//*3차원 배열로도 가능 -> r좌표, c좌표, 방문여부
 
 import java.io.BufferedReader;
 import java.io.IOException;
