@@ -72,7 +72,7 @@ public class Main_골드5_1916_최소비용구하기 {
             for (Bus next : busList.get(now.to)) {
                 if (costArr[next.to] > costArr[now.to] + next.cost) {
                     costArr[next.to] = costArr[now.to] + next.cost;
-                    pq.offer(new Bus(next.to, costArr[next.to]));
+                    pq.offer(new Bus(next.to, costArr[next.to]));   // PQ를 사용, 도착지 가장 먼저 도착하는 게 답이라는 그리디 기법이므로 그냥 next가 아닌, 갱신된 비용을 가지고 있는 BUS를 넣어주어야 함.
                 }
             }
         }
