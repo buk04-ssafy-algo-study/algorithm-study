@@ -1,5 +1,5 @@
 // 최소값 담을 때 map.size() > 0 이어야 하는 이유 모르겠음
-
+// -> Map에 남은 값이 1개일 때 그 1개의 값이 최대값이자 최소값이라 조건 걸어주는 것
 import java.util.*;
 import java.io.*;
 
