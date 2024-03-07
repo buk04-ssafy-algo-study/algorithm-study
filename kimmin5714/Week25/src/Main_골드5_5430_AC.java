@@ -8,14 +8,12 @@ import java.util.StringTokenizer;
 public class Main_골드5_5430_AC {
 	static StringBuilder sb = new StringBuilder(); 
 	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));		
 		StringTokenizer st = null;
 
 		int T = Integer.parseInt(br.readLine());
-
 		for(int t=1;t<=T;t++) {
-			String p = br.readLine();	// 문제에서 p에 해당하는 명령어
+			char[] p = br.readLine().toCharArray();	// 문제에서 p에 해당하는 명령어
 			int n = Integer.parseInt(br.readLine());
 
 			// 1. StringTokenizer는 구분할 문자를 합쳐서 넘겨주면 자동 파싱
@@ -36,16 +34,15 @@ public class Main_골드5_5430_AC {
 		System.out.println(sb);
 	}
 
-	public static void AC(String p, ArrayDeque<Integer> q) {
+	public static void AC(char[] p, ArrayDeque<Integer> q) {
 		boolean isRight = true;
-		char[] p2 = p.toCharArray();
-		for(int i=0;i<p2.length;i++) {
+		for(int i=0;i<p.length;i++) {
 			
-			if(p2[i] == 'R') {
+			if(p[i] == 'R') {
 				isRight = !isRight;	// 방향을 바꿔준다.
 				continue;
 			}
-			else if(p2[i] == 'D') {
+			else if(p[i] == 'D') {
 				if(isRight) {
 						if(q.pollFirst() == null) {
 						sb.append("error\n");
