@@ -11,7 +11,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BOJ_17836_공주님을구해라 {
 	static int n,m,t,map[][],len[][], time, result;
 	static Queue<int[]> q;
 	static boolean visited[][];

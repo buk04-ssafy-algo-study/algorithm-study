@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main{
+public class BOJ_14892 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringTokenizer st = null;
 	static int input[][], N, rotation[][], score, d[];

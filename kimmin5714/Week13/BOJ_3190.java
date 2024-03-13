@@ -1,3 +1,5 @@
+package Week13;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +38,7 @@ class Dir{
         return "Dir [x=" + x + ", c=" + c + "]"+"\n";
     }
 }
-public class Main {
+public class BOJ_3190 {
     static int n, k, L, d=0, time;
     static int delr[] = {0,1,0,-1}, delc[] = {1,0,-1,0}; //우하좌상
     static Stack<Position> snakeMove;

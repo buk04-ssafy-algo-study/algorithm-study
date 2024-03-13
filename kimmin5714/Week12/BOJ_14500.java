@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BOJ_14500 {
 	static int n,m,map[][],result;
 	static boolean visited[][];
 	static int delx[] = {1,1,0,0}, dely[] = {0,0,-1,1};

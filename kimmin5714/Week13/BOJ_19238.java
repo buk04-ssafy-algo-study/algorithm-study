@@ -42,7 +42,7 @@ class Position implements Comparable<Position>{
 		return this.d-o.d;
 	}
 }
-public class Main {
+public class BOJ_19238 {
 	static int n, m, k, map[][], result;
 	static List<Position> human, destination;
 	static boolean visited[][], flag;

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BOJ_2667_단지번호붙이기 {
 	static int n,map[][], cnt;
 	static List<Integer> list = new ArrayList<>();
 	static boolean visited[][];

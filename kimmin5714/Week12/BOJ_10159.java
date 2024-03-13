@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BOJ_10159 {
 	static int n, m, adj[][], reverse_adj[][];
 
 	public static void main(String[] args) throws IOException {
