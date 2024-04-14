@@ -49,60 +49,52 @@ public class Main_골드4_17140_이차원배열과연산 {
         }
     }
 
-    static void calcR() {
+    static void calc(boolean isRowOperation) {  // RowOperation이냐 아니냐에 따른 분기처리
         HashMap<Integer, Integer> countMap;
-        int maxColSize = 0; // R연산을 통해 갱신된 가장 긴 행의 길이(열 개수)
-        for (int i = 1; i <= rowSize; i++) {
+        int maxDimensionSize = 0;
+        int primarySize = isRowOperation ? rowSize : colSize;
+        int secondarySize = isRowOperation ? colSize : rowSize;
+
+        for (int i = 1; i <= primarySize; i++) {
             countMap = new HashMap<>();
-            for (int j = 1; j <= colSize; j++) {    // 한 행에 대하여 개수 카운트
-                if (A[i][j] == 0) continue; // 0은 정렬처리 하지 않음
-                if (countMap.containsKey(A[i][j])) countMap.replace(A[i][j], countMap.get(A[i][j]) + 1);
-                else countMap.put(A[i][j], 1);
-                A[i][j] = 0;    // 계산한 숫자는 0으로 초기화
+            for (int j = 1; j <= secondarySize; j++) {
+                int value = isRowOperation ? A[i][j] : A[j][i];
+                if (value == 0) continue;   // 0이면 카운트 x
+                countMap.put(value, countMap.getOrDefault(value, 0) + 1);
+
+                if (isRowOperation) A[i][j] = 0;    // 카운트 한 변수는 0으로 바꿔줌
+                else A[j][i] = 0;
             }
-            maxColSize = Integer.max(maxColSize, countMap.size() * 2);
+            maxDimensionSize = Math.max(maxDimensionSize, countMap.size() * 2); // rowSize, colSize를 바꿔주기 위한 최대값 저장
             PriorityQueue<Atom> pq = new PriorityQueue<>();
-            for (Integer key : countMap.keySet()) pq.offer(new Atom(key, countMap.get(key)));
+            for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+                pq.offer(new Atom(entry.getKey(), entry.getValue()));
+            }
+
             int index = 1;
-            while (!pq.isEmpty()) { // pq에 담은 모든 숫자에 대해 수행
+            while (!pq.isEmpty()) {
                 Atom atom = pq.poll();
-                A[i][index++] = atom.num;   // 1 + 2n에는 숫자 저장
-                A[i][index++] = atom.count; // 2n에는 횟수 저장
+                if (isRowOperation) {
+                    A[i][index++] = atom.num;   // 1 + 2n에는 숫자
+                    A[i][index++] = atom.count; // 2n에는 카운트 저장
+                } else {
+                    A[index++][i] = atom.num;
+                    A[index++][i] = atom.count;
+                }
             }
         }
-        colSize = maxColSize;
+
+        if (isRowOperation) colSize = maxDimensionSize;
+        else rowSize = maxDimensionSize;
     }
 
-    static void calcC() {
-        HashMap<Integer, Integer> countMap;
-        int maxRowSize = 0; // R연산을 통해 갱신된 가장 긴 행의 길이(열 개수)
-        for (int i = 1; i <= colSize; i++) {
-            countMap = new HashMap<>();
-            for (int j = 1; j <= rowSize; j++) {    // 한 행에 대하여 개수 카운트
-                if (A[j][i] == 0) continue; // 0은 정렬처리 하지 않음
-                if (countMap.containsKey(A[j][i])) countMap.replace(A[j][i], countMap.get(A[j][i]) + 1);
-                else countMap.put(A[j][i], 1);
-                A[j][i] = 0;    // 계산한 숫자는 0으로 초기화
-            }
-            maxRowSize = Integer.max(maxRowSize, countMap.size() * 2);
-            PriorityQueue<Atom> pq = new PriorityQueue<>();
-            for (Integer key : countMap.keySet()) pq.offer(new Atom(key, countMap.get(key)));
-            int index = 1;
-            while (!pq.isEmpty()) { // pq에 담은 모든 숫자에 대해 수행
-                Atom atom = pq.poll();
-                A[index++][i] = atom.num;   // 1 + 2n에는 숫자 저장
-                A[index++][i] = atom.count; // 2n에는 횟수 저장
-            }
-        }
-        rowSize = maxRowSize;
-    }
 
     static int solve() {
         for (int i = 0; i <= 100; i++) {
             if (A[r][c] == k) return i; // 정답 찾았을 경우 출력하고 함수 종료
 
-            if (rowSize >= colSize) calcR();   // R연산 수행
-            else calcC();  // C연산 수행
+            if (rowSize >= colSize) calc(true);   // R연산 수행
+            else calc(false);  // C연산 수행
         }
 
         return -1; // 정답 못찾았을 경우 -1 출력
