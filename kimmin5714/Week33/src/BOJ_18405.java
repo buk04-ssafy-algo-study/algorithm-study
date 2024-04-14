@@ -57,6 +57,7 @@ public class BOJ_18405 {
 
 		for(int i=0;i<S;i++) {
 			visited = new boolean[N][N];
+			//map은 key를 기본적으로 오름차순 정렬
 			for(Integer key : map.keySet()) 
 				bfs(key);			
 		}
