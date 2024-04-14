@@ -24,7 +24,7 @@ class Cloud {
 		this.y = y;
 	}
 }
-public class Main {
+public class BOJ_21610 {
 
 	static int n, m, d, s;
 	static int[][] map;

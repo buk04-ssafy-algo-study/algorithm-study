@@ -26,7 +26,7 @@ class Number implements Comparable<Number>{
 		return this.abs - o.abs;
 	}
 }
-public class Main {
+public class BOJ_11286 {
 	static PriorityQueue<Number> pq = new PriorityQueue<>();
 	static int n;
 	public static void main(String[] args) throws IOException {

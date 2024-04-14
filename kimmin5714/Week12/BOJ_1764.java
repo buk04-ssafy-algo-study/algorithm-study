@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BOJ_1764 {
 	static int n,m;
 	static HashSet<String> arr, arr2;
 	static List<String> result;

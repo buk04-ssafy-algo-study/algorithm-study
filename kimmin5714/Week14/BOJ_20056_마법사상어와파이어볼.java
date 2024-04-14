@@ -31,7 +31,7 @@ class Ball {
 		return "Ball [r=" + r + ", c=" + c + ", m=" + m + ", s=" + s + ", d=" + d + "]" +"\n";
 	}
 }
-public class Main {
+public class BOJ_20056_마법사상어와파이어볼 {
 	static int n,m,k,result,cntBall[][];
 	static int delr[] = {-1,-1,0,1,1,1,0,-1}, delc[] = {0,1,1,1,0,-1,-1,-1};
 	static List<Ball> list = new ArrayList<>();

@@ -4,10 +4,11 @@ https://www.acmicpc.net/problem/21608
 * Map, Set 사용하여 좋아하는 친구 저장 -> contains 함수 이용하여 검색
 * 주변 좋아하는 친구 찾기, 빈 자리 찾기는 4방향 탐색 이용 
 */
+
 import java.util.*;
 import java.io.*;
 
-static class Seat implements Comparable<Seat> {
+class Seat implements Comparable<Seat> {
 		int x, y, studentSum, emptySum;
 
 		public Seat(int x, int y, int studentSum, int emptySum) {
@@ -31,7 +32,7 @@ static class Seat implements Comparable<Seat> {
 			return y - other.y;
 		}
 }
-public class Main {
+public class BOJ_21608 {
 	static int N, sum;
 	static int[] students, dx = { -1, 0, 1, 0 }, dy = { 0, 1, 0, -1 };
 	static int[][] map;

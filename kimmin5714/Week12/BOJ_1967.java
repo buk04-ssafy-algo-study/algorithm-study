@@ -1,4 +1,4 @@
-/*
+package Week12;/*
  * 1. 각 노드를 dfs하여 최대합을 구한다.
  * 	1-1. 각 노드의 인접 노드 리스트 요소마다 dfs 수행
  * 	1-2. 단말 노드에 도달한 경우 
@@ -34,7 +34,7 @@ class Node {
 		return "Node [num=" + num + ", v=" + v + "]";
 	}
 }
-public class Main {
+public class BOJ_1967 {
 	static int n, result = Integer.MIN_VALUE;
 	static List<Node> list[];
 	static boolean visited[];

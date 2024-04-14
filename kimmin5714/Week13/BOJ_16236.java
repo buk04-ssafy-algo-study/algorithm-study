@@ -54,7 +54,7 @@ class Fish implements Comparable<Fish> {
 			return this.d - o.d;
 	}
 }
-public class Main {
+public class BOJ_16236 {
 	static int n,m,map[][];
 	static Shark shark;
 	static List<Fish> fishes = new ArrayList<>();
