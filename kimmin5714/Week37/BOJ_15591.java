@@ -3,10 +3,8 @@ package Week37;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -19,7 +17,7 @@ public class BOJ_15591 {
 		int N = Integer.parseInt(st.nextToken());
 		int Q = Integer.parseInt(st.nextToken());
 
-		ArrayList<int[]>[] adj = new ArrayList[N+1];
+		ArrayList<int[]>[] adj = new ArrayList[N+1]; // 인접리스트
 
 		for(int i=1;i<N;i++){
 			st = new StringTokenizer(br.readLine());
@@ -49,9 +47,9 @@ public class BOJ_15591 {
 			while(!q.isEmpty()){
 				int cur = q.poll();
 
-				for(int a=0;a<adj[cur].size();a++){
+				for(int a=0;a<adj[cur].size();a++){ // 인접리스트 탐색
 					int[] tmp = adj[cur].get(a);
-					if(!visited[tmp[0]] && tmp[1]>=k) {
+					if(!visited[tmp[0]] && tmp[1]>=k) { // 방문하지않고 k보다 큰 경우
 						q.offer(tmp[0]);
 						visited[tmp[0]] = true;
 						cnt++;
