@@ -1,4 +1,4 @@
-/*
+package Week14;/*
 * 구현
 */
 import java.io.BufferedReader;
@@ -7,10 +7,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-class Ball {
+class Ball2 {
 	int r,c,m,s,d;
 
-	public Ball(int r, int c, int m, int s, int d) {
+	public Ball2(int r, int c, int m, int s, int d) {
 		super();
 		this.r = r;
 		this.c = c;
@@ -18,7 +18,7 @@ class Ball {
 		this.s = s;
 		this.d = d;
 	}
-	public Ball(Ball ball) {
+	public Ball2(Ball2 ball) {
 		super();
 		this.r = ball.r;
 		this.c = ball.c;
@@ -34,7 +34,7 @@ class Ball {
 public class BOJ_20056_마법사상어와파이어볼 {
 	static int n,m,k,result,cntBall[][];
 	static int delr[] = {-1,-1,0,1,1,1,0,-1}, delc[] = {0,1,1,1,0,-1,-1,-1};
-	static List<Ball> list = new ArrayList<>();
+	static List<Ball2> list = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -53,7 +53,7 @@ public class BOJ_20056_마법사상어와파이어볼 {
 			int v = Integer.parseInt(st.nextToken());
 			int s = Integer.parseInt(st.nextToken());
 			int d = Integer.parseInt(st.nextToken());
-			list.add(new Ball(r,c,v,s,d));
+			list.add(new Ball2(r,c,v,s,d));
 		}
 		for(int i=0;i<k;i++) {
 			cntBall = new int[n][n];
@@ -67,7 +67,7 @@ public class BOJ_20056_마법사상어와파이어볼 {
 	}
 	private static void move() {
 		for(int i=0;i<list.size();i++) {
-			Ball ball = list.get(i);
+			Ball2 ball = list.get(i);
 
 			int nr = (ball.r + n + delr[ball.d] * (ball.s%n)) % n;
 			int nc = (ball.c + n + delc[ball.d] * (ball.s%n)) % n;
@@ -92,11 +92,11 @@ public class BOJ_20056_마법사상어와파이어볼 {
 
 	}
 	private static void findBall(int r, int c) {
-		List<Ball> tmp = new ArrayList<>();
+		List<Ball2> tmp = new ArrayList<>();
 
 		for(int i=list.size()-1;i>=0;i--) {
 			if(list.get(i).r == r && list.get(i).c == c) {
-				tmp.add(new Ball(list.get(i)));
+				tmp.add(new Ball2(list.get(i)));
 				list.remove(i);
 			}
 		}
@@ -117,6 +117,6 @@ public class BOJ_20056_마법사상어와파이어볼 {
 		if(even == tmp.size() || odd == tmp.size()) d = 0;
 
 		for(int i=0;i<4;i++)
-			list.add(new Ball(r,c,v,s,d+i*2));
+			list.add(new Ball2(r,c,v,s,d+i*2));
 	}
 }
