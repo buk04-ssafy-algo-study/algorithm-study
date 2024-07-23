@@ -1,0 +1,76 @@
+// https://www.acmicpc.net/problem/1202
+// 보석 도둑
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+
+        long ans = 0;
+
+        int[] bag = new int[K]; // 가방 무게 오름차순 정렬
+        List<Stone> stones = new ArrayList<>();
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            int M = Integer.parseInt(st.nextToken());
+            int V = Integer.parseInt(st.nextToken());
+            stones.add(new Stone(M, V));
+        }
+
+        for (int i = 0; i < K; i++) {
+            bag[i] = Integer.parseInt(br.readLine());
+        }
+
+        Arrays.sort(bag);
+        Collections.sort(stones);
+
+        // 가방에 넣을 수 있는 보석의 가치 (내림차순)
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+
+        // 가방에 이미 넣은 보석을 다시 넣지 않기 위해 인덱스 관리
+        int index = 0;
+
+        for (int i = 0; i < K; i++) {
+            while (index < N && stones.get(index).weight <= bag[i]) {
+                pq.add(stones.get(index).value);
+                // 보석을 넣었다면 그 다음 보석부터 체크해야한다
+                index++;
+            }
+
+            if (!pq.isEmpty()) {
+                ans += pq.poll();
+            }
+        }
+
+        System.out.println(ans);
+
+    }
+
+    private static class Stone implements Comparable<Stone> {
+        int weight, value;
+
+        public Stone(int weight, int value) {
+            this.weight = weight;
+            this.value = value;
+        }
+
+        @Override
+        public int compareTo(Stone s) {
+            if (this.weight == s.weight) {
+                // 같은 무게라면 가치 기준 내림차순 정렬
+                return s.value - this.value;
+            }
+            // 무게 기준 오름차순 정렬
+            return this.weight - s.weight;
+        }
+    }
+}
