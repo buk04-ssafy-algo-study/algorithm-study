@@ -9,9 +9,7 @@ import java.util.StringTokenizer;
 public class BOJ_13164 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = null;
-
-        st = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
@@ -29,7 +27,7 @@ public class BOJ_13164 {
 
         Collections.sort(diff); // 오름차순 정렬
 
-        for(int i=0;i<N-K;i++) // K-1개의 구분선 필요 : (N-1)-(K-1) 키 차이 개수 - 구분선 개수
+        for(int i=0;i<N-K;i++) // K-1개의 구분선 필요 : (N-1)-(K-1)
             res+=diff.get(i);
 
         System.out.println(res);
