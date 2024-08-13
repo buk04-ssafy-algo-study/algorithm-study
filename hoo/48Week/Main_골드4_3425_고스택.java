@@ -35,9 +35,9 @@ public class Main_골드4_3425_고스택 {
         }
 
         int N = Integer.parseInt(br.readLine());    // 프로그램 실행 횟수
-        int result;
+        long result;
         for (int i = 0; i < N; i++) {   // N번 만큼 프로그램 수행
-            result = doProgram(programCommandList, Integer.parseInt(br.readLine()));
+            result = doProgram(programCommandList, Long.parseLong(br.readLine()));
             if (result == Integer.MAX_VALUE) sb.append("ERROR").append("\n");
             else sb.append(result).append("\n");
         }
@@ -45,18 +45,18 @@ public class Main_골드4_3425_고스택 {
         return sb.toString();    // 명령이 QUIT이 아니고 실행을 잘 마쳤다는 의미로 sb를 리턴
     }
 
-    static int doProgram(List<String> programCommandList, int initNumber) { // 기계의 각 프로그램을 수행하는 함수
-        Stack<Integer> stack = new Stack<>();
+    static long doProgram(List<String> programCommandList, long initNumber) { // 기계의 각 프로그램을 수행하는 함수
+        Stack<Long> stack = new Stack<>();
         stack.push(initNumber);
         String programCommand;
-        int popNumber1, popNumber2;
+        long popNumber1, popNumber2;
 
         for (int i = 0; i < programCommandList.size(); i++) {
             programCommand = programCommandList.get(i);
             try {
                 switch (programCommand.substring(0, 3)) {  // 간단한 것들은 그대로 작성, 나머지는 함수화
                     case "NUM":   // X를 스택에 삽입
-                        stack.push(Integer.valueOf(programCommand.substring(4)));  // 숫자만 잘라서 삽입
+                        stack.push(Long.valueOf(programCommand.substring(4)));  // 숫자만 잘라서 삽입
                         break;
                     case "POP": // 스택 가장 윗수 제거
                         stack.pop();
@@ -74,11 +74,8 @@ public class Main_골드4_3425_고스택 {
                         stack.push(popNumber1);
                         stack.push(popNumber2);
                         break;
-                    case "ADD": case "SUB": case "MUL":
+                    case "ADD": case "SUB": case "MUL": case "DIV": case "MOD":
                         stack.push(doBinaryCalc(programCommand, stack));
-                        break;
-                    case "DIV": case "MOD":
-                        stack.push(calcDivMod(programCommand, stack));
                         break;
                 }
             } catch (Exception e) {
@@ -90,49 +87,30 @@ public class Main_골드4_3425_고스택 {
         return stack.pop();
     }
 
-    static int doBinaryCalc(String programCommand, Stack<Integer> stack) throws Exception {   // 이항연산 수행하는 함수
-        int LIMIT = 1_000_000_000;
-        int popNumber1, popNumber2;
-        long result = 0;
+    static long doBinaryCalc(String programCommand, Stack<Long> stack) throws Exception {   // 이항연산 수행하는 함수
+        // div, mod: 왼쪽 숫자(두 번째 숫자)가 피제수, 오른쪽 숫자(첫 번째 숫자)가 제수
+        // 몫, 나머지 부호 -> 1. 피연산자 중 음수 하나면 몫 부호 음수 / 2. 이 경우를 제외하면 몫은 항상 양수 / 3. 나머지 부호는 피제수(왼쪽 숫자) 부호랑 같음
+        final int LIMIT = 1_000_000_000;
+        long popNumber1, popNumber2, result = 0;
 
-        try {
+        try {   // stack pop 과정에서 발생할 에러 감지
             popNumber1 = stack.pop();
             popNumber2 = stack.pop();
         } catch (Exception e) {
             throw new Exception();
         }
+        if ((programCommand.equals("DIV") || programCommand.equals("MOD")) && popNumber1 == 0) throw new Exception(); // 나누기 관련 연산은 0 divide 에러 처리
 
         switch (programCommand) {
             case "ADD":  // 스택 가장 윗수와 그 아랫수 더해서 다시 삽입, 10억 넘으면 에러
-                result = (long) popNumber1 + (long) popNumber2;
+                result = popNumber1 + popNumber2;
                 break;
             case "SUB": // 스택 가장 윗수와 그 아랫수 더해서 빼서(두 번째 - 첫 번째) 삽입, -10억 넘으면 에러
-                result = (long) popNumber2 - (long) popNumber1;
+                result = popNumber2 - popNumber1;
                 break;
             case "MUL":  // 스택 가장 윗수와 그 아랫수 곱해서 다시 삽입, 10억 넘으면 에러
-                result = (long) popNumber1 * (long) popNumber2;
+                result = popNumber1 * popNumber2;
                 break;
-        }
-        if (Math.abs(result) > LIMIT) throw new Exception();    // 계산 결과 절댓값 10억 넘으면 예외 던짐
-
-        return (int) result;    // 예외 발생 안하면 계산한 값 리턴
-    }
-
-    static int calcDivMod(String programCommand, Stack<Integer> stack) throws Exception {    // 나누기 연산
-        // div, mod: 왼쪽 숫자(두 번째 숫자)가 피제수, 오른쪽 숫자(첫 번째 숫자)가 제수
-        // 몫, 나머지 부호 -> 1. 피연산자 중 음수 하나면 몫 부호 음수 / 2. 이 경우를 제외하면 몫은 항상 양수 / 3. 나머지 부호는 피제수(왼쪽 숫자) 부호랑 같음
-        int popNumber1, popNumber2;
-        long result = 0;
-
-        try {
-            popNumber1 = stack.pop();
-            popNumber2 = stack.pop();
-        } catch (Exception e) {
-            throw new Exception();
-        }
-        if (popNumber1 == 0) throw new Exception(); // 0 divide 에러
-
-        switch (programCommand) {
             case "DIV":  // 스택 가장 윗수와 그 아랫수 나눈(두 번째 숫자/첫 번째 숫자) 몫 저장
                 result = Math.abs(popNumber2) / Math.abs(popNumber1);
                 if ((popNumber1 < 0 && popNumber2 > 0)|| (popNumber1 > 0) && (popNumber2 < 0)) result *= -1;
@@ -142,8 +120,9 @@ public class Main_골드4_3425_고스택 {
                 if (popNumber2 < 0) result *= -1;
                 break;
         }
+        if (Math.abs(result) > LIMIT) throw new Exception();    // 계산 결과 절댓값 10억 넘으면 예외 던짐
 
-        return (int) result;    // 예외 발생 안하면 계산한 값 리턴
+        return result;    // 예외 발생 안하면 계산한 값 리턴
     }
 
 }
