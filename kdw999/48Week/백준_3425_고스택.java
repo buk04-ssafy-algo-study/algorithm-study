@@ -1,154 +1,178 @@
-package Week48;
-
 import java.io.*;
 import java.util.*;
 
 public class 백준_3425_고스택 {
 
-	static Stack<Integer> stack;
-	static List<String> command;
+    public static ArrayList<String> list = new ArrayList<>();
+    public static long[] stack = new long[1001];
+    public static int head = 0;
+    public static int MAX = 1000000000;
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-		
-		
-		while(true) {
-		
-			stack = new Stack<>();
-			command = new ArrayList<>();
-			
-		   while(true) {
-			
-			String line = br.readLine();
-			command.add(line);
-			
-			if(line.equals("END")) break;
-			
-			if(line.equals("QUIT")) {
-				System.out.println(sb);
-				return;
-			}
-		   }
-		
-		int N = Integer.parseInt(br.readLine());
-		
-		for(int i=0; i<N; i++) {
-			
-			int num = Integer.parseInt(br.readLine());
-			
-			stack.add(num);
-			
-			for(int j=0; j<command.size(); j++) {
-				
-				// 스택 위에 숫자 저장, NUM
-				if(command.get(i).charAt(0) == 'N') {
-					
-					String[] split = command.get(i).split(" ");
-					stack.add(Integer.parseInt(split[1]));
-				}
-				
-				// 스택 가장 위 숫자 제거
-				else if(command.get(i).equals("POP")) {
-					
-					stack.pop();
-				}
-				
-				// 첫 번째 수 부호 변경
-                else if(command.get(i).equals("INV")) {
-					
-                	int stNum = stack.pop();
-                	stack.add(-stNum);
-				}
-				
-				// 첫 번째 숫자를 하나 더 스택 가장 위에 저장
-                else if(command.get(i).equals("DUP")) {
-                	
-                	int stNum = stack.peek();
-                	stack.add(stNum);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringBuilder sb = new StringBuilder();
+
+        while (true) {
+            list.clear();
+
+            String line = br.readLine();
+
+
+            // QUIT일 경우 다음 기계 설명이 없음.
+            if (line.equals("QUIT")) {
+                break;
+            }
+
+            // END가 나올때까지 명령 입력
+            while (!line.equals("END")) {
+                String[] splitLine = line.split(" ");
+
+                // POP, INV, DUP, SWP, ADD, SUB, MUL, DIV, MOD
+                if (splitLine.length == 1) {
+                    list.add(splitLine[0]);
+                } else {
+                    // NUM X
+                    list.add(splitLine[0]);
+                    list.add(splitLine[1]);
                 }
-				
-				// 첫 숫자와 두번 째 위치 변경
-                else if(command.get(i).equals("SWP")) {
-                	
-                	int stNum1 = stack.pop();
-                	int stNum2 = stack.pop();
-                	
-                	stack.add(stNum1);
-                	stack.add(stNum2);
+
+                line = br.readLine();
+            }
+
+
+
+
+
+            int test_case = Integer.parseInt(br.readLine());
+
+            for (int x = 0; x < test_case; x++) {
+                int num = Integer.parseInt(br.readLine());
+
+                if (runProgram(num)) {
+                    sb.append(stack[0]).append("\n");
+                } else {
+                    sb.append("ERROR\n");
                 }
-				
-				// 1, 2 숫자 더하기
-                else if(command.get(i).equals("ADD")) {
-	
-                	int stNum1 = stack.pop();
-                	int stNum2 = stack.pop();
-                	
-                	stack.add(stNum1 + stNum2);
-                 }
-				
-				// 2에서 1 빼기
-                else if(command.get(i).equals("SUB")) {
-	
-                	int stNum1 = stack.pop();
-                	int stNum2 = stack.pop();
-                	
-                	stack.add(stNum2 - stNum1);
+            }
+
+            sb.append("\n");
+            br.readLine();
+
+        }
+        System.out.println(sb);
+
+    }
+
+    // 입력 값에 대해 프로그램 수행
+    public static boolean runProgram(int now) {
+        int listSize = list.size();
+
+        // 초기화
+        head = 0;
+        stack[head++] = now;
+
+        for (int x = 0; x < listSize; x++) {
+
+            if (list.get(x).equals("NUM")) {
+
+                stack[head++] = Long.parseLong(list.get(x + 1));
+                x++;
+            } else if (list.get(x).equals("POP")) {
+                if(head<1)
+                    return false;
+
+                head--;
+
+            } else if (list.get(x).equals("INV")) {
+
+                if(head<1)
+                    return false;
+
+                stack[head - 1] *= -1;
+
+            } else if (list.get(x).equals("DUP")) {
+
+                if (head < 1) {
+                    return false;
                 }
-				
-				// 1 * 2
-                else if(command.get(i).equals("MUL")) {
-	
-                	int stNum1 = stack.pop();
-                	int stNum2 = stack.pop();
-                	
-                	stack.add(stNum1 * stNum2);
-                 }
-				
-				// 2 / 1, 피연산자가 하나라도 음수면 몫도 음수
-                else if(command.get(i).equals("DIV")) {
-	
-                	int stNum1 = stack.pop();
-                	int stNum2 = stack.pop();
-                	
-                	int resultNum = Math.abs(stNum2) / Math.abs(stNum1);
-                	
-                	if(stNum1 < 0 || stNum2 < 0) resultNum = -resultNum;
-                	
+
+                stack[head] = stack[head - 1];
+                head++;
+
+            } else if (list.get(x).equals("SWP")) {
+
+                if(head<2)
+                    return false;
+
+                long temp = stack[head - 1];
+                stack[head - 1] = stack[head - 2];
+                stack[head - 2] = temp;
+            } else if (list.get(x).equals("ADD")) {
+
+                if(head<2)
+                    return false;
+
+                if (Math.abs(stack[head - 1] + stack[head - 2]) > MAX) {
+                    return false;
                 }
-				
-				// 2 % 1, 나눠지는 수가 음수면 나머지도 음수
-                else if(command.get(i).equals("MOD")) {
-	
-                	int stNum1 = stack.pop();
-                	int stNum2 = stack.pop();
-                	
-                	int resultNum = Math.abs(stNum2) % Math.abs(stNum1);
-                	
-                	if(stNum2 < 0) resultNum = -resultNum;
-                	
+
+                stack[head - 2] = stack[head - 1] + stack[head - 2];
+                head--;
+
+            } else if (list.get(x).equals("SUB")) {
+                if(head<2)
+                    return false;
+
+                if (Math.abs(stack[head - 2] - stack[head - 1]) > MAX) {
+
+                    return false;
                 }
-				
-				// END
-                else {
-                	
-                	if(!stack.isEmpty()) {
-                		
-                	int result = stack.pop();
-                	System.out.println(result);
-                	sb.append(result+"\n");
-                	}
-                	
-                	else {
-                		
-                	sb.append("ERROR"+"\n");
-                	}
+
+                stack[head - 2] = stack[head - 2] - stack[head - 1];
+                head--;
+
+
+            } else if (list.get(x).equals("MUL")) {
+                if(head<2)
+                    return false;
+
+                if (Math.abs(stack[head - 2] * stack[head - 1]) > MAX) {
+                    return false;
                 }
-			}
-		}
-		sb.append("\n");
-		
-		}// 가장 외부 while
-	}
+
+                stack[head - 2] = stack[head - 2] * stack[head - 1];
+                head--;
+            } else if (list.get(x).equals("DIV")) {
+                if(head<2)
+                    return false;
+
+                if(stack[head-1]==0)
+                    return false;
+
+                stack[head - 2] = stack[head - 2] / stack[head - 1];
+                head--;
+            } else {
+                // MOD
+
+                if(head<2)
+                    return false;
+
+                if(stack[head-1]==0)
+                    return false;
+
+                stack[head - 2] = stack[head - 2] % stack[head - 1];
+                head--;
+            }
+
+        }
+
+        // 스택에 저장되어 있느 숫자가 1개가 아니라면 ERROR
+        if(head==1)
+            return true;
+        return false;
+
+    }
 }
