@@ -1,0 +1,39 @@
+import java.util.*;
+
+public class Main {
+
+    private static ArrayList<Long> nums; // 9876543210 int 범위 초과
+
+    private static void make(int index, long num) {  // index: 현재 자리수, num: 현재 숫자
+        if (index > 10) return;    // 총 자리수가 10 을 넘길 수 없음
+
+        nums.add(num);
+
+        for (int i = 0; i < num % 10; i++) {
+            // 현재 수 % 10 을 하면 가장 마지막 자리 수보다 작은 수만 i가 될 수 있다
+            // 자리수를 하나 올리고, 왼쪽으로 수를 밀어준다
+            make(index + 1, num * 10 + i);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        nums = new ArrayList<>();
+
+        int N = sc.nextInt();
+
+        // 가능한 모든 수를 찾는 과정
+        for (int i = 0; i < 10; i++) {
+            make(1, i);
+        }
+
+        Collections.sort(nums);
+
+        if (N >= nums.size()) {
+            System.out.println(-1);
+        } else {
+            System.out.println(nums.get(N));
+        }
+    }
+}
+

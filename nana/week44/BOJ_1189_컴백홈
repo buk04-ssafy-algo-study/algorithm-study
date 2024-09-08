@@ -1,0 +1,61 @@
+// https://www.acmicpc.net/problem/1189
+// 컴백홈
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    private static int R, C, K, ans;
+    private static char[][] map;
+    private static boolean[][] isVisited;
+    private static final int[][] delta = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    private static void backtracking(int r, int c, int count) {
+
+        if (r == R - 1 && c == C - 1) {
+            if (count == K)
+                ans++;
+            return;
+        }
+
+        for (int[] d : delta) {
+            int nr = r + d[0];
+            int nc = c + d[1];
+
+            if (nr < 0 || nr >= R || nc < 0 || nc >= C) continue;
+            if (map[nr][nc] == 'T' || isVisited[nr][nc]) continue;
+
+            isVisited[nr][nc] = true;
+            backtracking(nr, nc, count + 1);
+            isVisited[nr][nc] = false;
+
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        R = Integer.parseInt(st.nextToken());
+        C = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+
+        map = new char[R][C];
+        isVisited = new boolean[R][C];
+
+        for (int i = R - 1; i >= 0; i--) {
+            String str = br.readLine();
+            for (int j = 0; j < C; j++) {
+                map[i][j] = str.charAt(j);
+            }
+        }
+
+        isVisited[0][0] = true;
+        backtracking(0, 0, 1);
+
+        System.out.println(ans);
+    }
+}
