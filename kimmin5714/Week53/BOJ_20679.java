@@ -65,7 +65,7 @@ public class BOJ_20679 {
 
             // 배열을 벗어나는 경우 탈출 (true 반환)
             if (nr < 0 || nr >= N || nc < 0 || nc >= M) return true;
-            // 방향 순환: 1 -> 2 -> 3 -> 4 -> 1 ...
+
             if (delNum + 1 >= 5)
                 delNum = 1;
             else
