@@ -22,7 +22,7 @@ public class BOJ_18430 {
         }
 
         boolean[][] visited = new boolean[N][M];
-        dfs(0,0, visited );
+        dfs(0,0, visited);
         System.out.print(res);
     }
 
