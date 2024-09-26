@@ -1,0 +1,68 @@
+// https://www.acmicpc.net/problem/1956
+// 백준 1956 운동
+
+import java.util.*;
+
+public class Main {
+
+    private static int V, E, min;
+    private static int[][] map;
+    private static int INF = 987654321;
+
+    private static void floyd() {
+        for (int k = 0; k < V; k++) {
+            for (int i = 0; i < V; i++) {
+                for (int j = 0; j < V; j++) {
+                    if (i == j) {
+                        map[i][j] = 0;
+                        continue;
+                    }
+
+                    map[i][j] = Math.min(map[i][j], map[i][k] + map[k][j]);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        V = sc.nextInt();
+        E = sc.nextInt();
+
+        map = new int[V][V];
+        min = INF;  // 최댓값을 일관되게 잡아야 함
+
+        for (int i = 0; i < V; i++) {
+            Arrays.fill(map[i], INF);
+        }
+
+        for (int i = 0; i < E; i++) {
+            int a = sc.nextInt() - 1;
+            int b = sc.nextInt() - 1;
+            int c = sc.nextInt();
+
+            map[a][b] = c;
+        }
+
+        floyd();
+
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (i == j) continue;
+
+                if (map[i][j] != INF && map[j][i] != INF) {
+                    // 사이클 : 서로에게 가는 경로가 있음
+                    // A -> B + B -> A
+                    min = Math.min(min, map[i][j] + map[j][i]);
+                }
+            }
+        }
+
+        if (min == INF) {
+            System.out.println(-1);
+        } else {
+            System.out.println(min);
+        }
+    }
+}
