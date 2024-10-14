@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Work {
+class Work { // i주마다 일한 횟수와 시간
     int[] cnt;
     int[] hour;
     int[] min;
@@ -33,20 +33,20 @@ public class BOJ_29754 {
         int M = Integer.parseInt(st.nextToken());
 
         int weeks = M / 7;
-        Map<String, Work> youtuberMap = new HashMap<>();
+        Map<String, Work> youtuberMap = new HashMap<>(); // 이름이 Key, 일한 횟수와 시간을 Value로 저장
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             String name = st.nextToken();
-            int day = (Integer.parseInt(st.nextToken()) - 1) / 7;
+            int day = (Integer.parseInt(st.nextToken()) - 1) / 7; // 인덱스로 몇 번째 주인지 확인
             String startTime = st.nextToken();
             String endTime = st.nextToken();
 
-            youtuberMap.putIfAbsent(name, new Work(weeks));
+            youtuberMap.putIfAbsent(name, new Work(weeks)); // HashMap에 없는 유튜버이면 생성
             Work work = youtuberMap.get(name);
 
-            work.cnt[day]++;
-            updateWorkTime(startTime, endTime, work, day);
+            work.cnt[day]++; // 일한 횟수 추가
+            updateWorkTime(startTime, endTime, work, day); // 일한 시간 업데이트
         }
 
         List<String> res = new ArrayList<>();
@@ -83,12 +83,12 @@ public class BOJ_29754 {
         work.hour[day] += h2 - h1;
         work.min[day] += m2 - m1;
 
-        if (work.min[day] < 0) {
+        if (work.min[day] < 0) { // 분 단위가 음수인 경우
             work.min[day] += 60;
             work.hour[day]--;
         }
 
-        if (work.min[day] >= 60) {
+        if (work.min[day] >= 60) { // 분 단위가 60 이상인 경우
             work.min[day] -= 60;
             work.hour[day]++;
         }
