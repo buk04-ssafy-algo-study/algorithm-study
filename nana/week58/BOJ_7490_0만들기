@@ -1,0 +1,55 @@
+import java.util.*;
+
+class Main {
+
+    private static StringBuilder sb;
+    private static int N;
+
+    private static void dfs(int now, int num, int sum, int op, String exp) {
+        // now: 하나씩 올라가는 수, 마지막에 N이 됨
+        // num: 현재 더하거나 뺄 수
+        // sum: 총합
+        // op: 빈칸인 경우 부호를 그대로 가지고 가야함
+        // exp: 공식
+
+        if (N == now) {
+            sum += num * op;
+            if (sum == 0) {
+                sb.append(exp).append("\n");
+            }
+            return;
+        }
+
+        // 출력 시 아스키코드 순서이기 때문에 dfs 순서 체크
+
+        // 숫자 이어붙이기 (빈칸)
+        dfs(now + 1, num * 10 + (now + 1), sum, op, exp + " " + (now + 1));
+        // 더하기
+        dfs(now + 1, now + 1, sum + num * op, 1, exp + "+" + (now + 1));
+        // 빼기
+        dfs(now + 1, now + 1, sum + num * op, -1, exp + "-" + (now + 1));
+
+
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        sb = new StringBuilder();
+
+        int T = sc.nextInt();
+
+        for (int tc = 1; tc <= T; tc++) {
+
+            N = sc.nextInt();
+
+            dfs(1, 1, 0, 1, "1");
+
+            sb.append("\n");
+
+        }
+
+        System.out.println(sb);
+    }
+
+}
