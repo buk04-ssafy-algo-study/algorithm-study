@@ -66,8 +66,10 @@ public class Main_20208_진우의민트초코우유 {
         }
         int dist;
         for (int[] milk : milks) {    // 모든 우유들에 대해서
+            if (isDrunken[milk[0]][milk[1]]) continue;  // 이미 마신 우유면 건너 뜀
             dist = calcDist(new int[] {now.row, now.col}, milk);
-            if (dist > now.hp || isDrunken[milk[0]][milk[1]]) continue;    // 마실 수 없는 우유이거나 이미 마신 우유라면 건너 뜀
+            if (dist > now.hp) continue;    // 마실 수 없는 우유이면 건너 뜀
+//            if (dist > now.hp || isDrunken[milk[0]][milk[1]]) continue;    // 마실 수 없는 우유이거나 이미 마신 우유라면 건너 뜀
             isDrunken[milk[0]][milk[1]] = true;
             doEatMilk(new Jinu(milk[0], milk[1], now.hp-dist+H, now.milkCount+1), isDrunken);
             isDrunken[milk[0]][milk[1]] = false;
