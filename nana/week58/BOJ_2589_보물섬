@@ -1,0 +1,82 @@
+import java.util.*;
+import java.io.*;
+
+class Main {
+
+    private static int R, C, max_time, result;
+    private static int[][] delta = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+    private static Character[][] map;
+    private static Queue<Point> q;
+    private static boolean[][] isVisited;
+
+    private static void bfs(int r, int c) {
+        q = new ArrayDeque<>();
+        isVisited = new boolean[R][C];
+
+        q.add(new Point(r, c, 0));
+        isVisited[r][c] = true;
+
+        max_time = -1;
+
+        while (!q.isEmpty()) {
+
+            Point p = q.poll();
+
+            for (int[] d : delta) {
+                int nr = p.r + d[0];
+                int nc = p.c + d[1];
+
+                if (nr < 0 || nc < 0 || nr >= R || nc >= C || isVisited[nr][nc]) continue;
+
+                if (map[nr][nc] == 'L') {
+                    isVisited[nr][nc] = true;
+                    max_time = Math.max(max_time, p.time + 1);
+                    q.add(new Point(nr, nc, p.time + 1));
+                }
+            }
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        R = Integer.parseInt(st.nextToken());
+        C = Integer.parseInt(st.nextToken());
+
+        map = new Character[R][C];
+        result = Integer.MIN_VALUE;
+
+        for (int i = 0; i < R; i++) {
+            String str = br.readLine();
+            for (int j = 0; j < C; j++) {
+                map[i][j] = str.charAt(j);
+            }
+        }
+
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                if (map[i][j] == 'L') {
+                    bfs(i, j);
+                    result = Math.max(result, max_time);
+                }
+            }
+        }
+
+        System.out.println(result);
+
+    }
+
+    public static class Point {
+        int r, c;
+        int time;
+
+        public Point(int r, int c, int time) {
+            this.r = r;
+            this.c = c;
+            this.time = time;
+        }
+    }
+}
