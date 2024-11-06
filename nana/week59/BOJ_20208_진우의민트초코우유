@@ -1,0 +1,81 @@
+import java.util.*;
+import java.io.*;
+
+class Main {
+
+    private static int N, M, H;
+    private static int res; // 민초우유 최대 개수
+    private static int[][] map;
+    private static List<Point> milk;
+    private static int sx, sy;
+
+    private static void backtracking(int x, int y, int stamina, int count) {
+        if (dist(x, y, sx, sy) <= stamina) {
+            res = Math.max(res, count);
+        }
+
+        for (Point mint : milk) {
+            // 지금 위치와 민초 우유의 위치를 계산해서 더해주면 된다
+            // 만약 해당 민초우유를 먹으러 갈 수 없으면 통과
+            // 우유를 먹었다면 다시 backtracking 함수 호출 -> 우유 먹으면 H 만큼 체력 증가
+            // 함수 호출 후에 우유는 안 먹었고 이동도 안했다! 로 만들어주면 됨
+
+            if (mint.isVisited) continue;
+
+            if (dist(mint.x, mint.y, x, y) <= stamina) {
+                mint.isVisited = true;
+                backtracking(mint.x, mint.y, stamina - dist(mint.x, mint.y, x, y) + H, count + 1);
+                mint.isVisited = false;
+            }
+        }
+
+    }
+
+    public static int dist(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        H = Integer.parseInt(st.nextToken());
+
+        res = 0;
+        map = new int[N][N];
+        milk = new ArrayList<>();
+
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+            for (int j = 0; j < N; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+
+                if (map[i][j] == 1) {
+                    sx = i;
+                    sy = j;
+                } else if (map[i][j] == 2) {
+                    milk.add(new Point(i, j, false));
+                }
+            }
+        }
+
+        backtracking(sx, sy, M, 0);
+
+        System.out.println(res);
+    }
+
+    public static class Point {
+        int x, y;
+        boolean isVisited;
+
+        public Point(int x, int y, boolean isVisited) {
+            this.x = x;
+            this.y = y;
+            this.isVisited = isVisited;
+        }
+    }
+}

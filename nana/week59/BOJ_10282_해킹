@@ -1,0 +1,95 @@
+import java.util.*;
+import java.io.*;
+
+class Main {
+
+    private static StringBuilder sb;
+    private static int n, d, c; // 컴퓨터 개수, 의존성 개수, 해킹당한 컴퓨터 번호(시작점)
+    private static List<Computer>[] virus;
+    private static int[] dist;
+
+    private static void dijkstra() {
+
+        PriorityQueue<Computer> pq = new PriorityQueue<>((o1, o2) -> o1.time - o2.time);
+        pq.add(new Computer(c, 0));
+
+        while (!pq.isEmpty()) {
+
+            Computer now = pq.poll();
+
+            for (Computer next : virus[now.idx]) {
+                if (dist[next.idx] > dist[now.idx] + next.time) {
+                    dist[next.idx] = dist[now.idx] + next.time;
+                    pq.add(new Computer(next.idx, dist[next.idx]));
+                }
+            }
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        sb = new StringBuilder();
+
+        int T = Integer.parseInt(st.nextToken());
+
+        for (int tc = 1; tc <= T; tc++) {
+
+            st = new StringTokenizer(br.readLine());
+
+            n = Integer.parseInt(st.nextToken());
+            d = Integer.parseInt(st.nextToken());
+            c = Integer.parseInt(st.nextToken());
+
+            virus = new List[n + 1];
+            dist = new int[n + 1];
+            for (int i = 1; i <= n; i++) {
+                virus[i] = new ArrayList<>();
+                dist[i] = Integer.MAX_VALUE;
+            }
+
+            for (int i = 0; i < d; i++) {
+
+                st = new StringTokenizer(br.readLine());
+
+                int a = Integer.parseInt(st.nextToken());
+                int b = Integer.parseInt(st.nextToken());
+                int s = Integer.parseInt(st.nextToken());
+
+                virus[b].add(new Computer(a, s));
+
+            }
+
+            dist[c] = 0;
+
+            dijkstra();
+
+            int max = 0;
+            int count = 0;
+            for (int i = 1; i <= n; i++) {
+                if (dist[i] != Integer.MAX_VALUE) {
+                    count++;
+                    max = Math.max(max, dist[i]);
+                }
+            }
+
+            sb.append(count).append(" ").append(max);
+            sb.append("\n");
+        }
+
+        System.out.println(sb);
+    }
+
+    public static class Computer {
+        int idx, time;
+
+        public Computer(int idx, int time) {
+            this.idx = idx;
+            this.time = time;
+        }
+    }
+
+}
