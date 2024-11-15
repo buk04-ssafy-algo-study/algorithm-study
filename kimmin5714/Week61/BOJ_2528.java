@@ -30,7 +30,7 @@ public class BOJ_2528 {
 
             // 막대 방향, 시작 인덱스, 끝 인덱스 저장
             if (dir == 0) {
-                sticks[i] = new Stick(0, 1, len+1);
+                sticks[i] = new Stick(0, 1, len + 1);
             } else if (dir == 1) {
                 sticks[i] = new Stick(1, L - len, L);
             }
@@ -57,8 +57,8 @@ public class BOJ_2528 {
     }
 
     private static void moveSticks(Stick[] sticks) { // 방향에 따라 막대 한 칸씩 이동
-        for (int i = 1; i <= sticks.length-1; i++) {
-            switch(sticks[i].dir){
+        for (int i = 1; i <= sticks.length - 1; i++) {
+            switch (sticks[i].dir) {
                 case 0:
                     sticks[i].start++;
                     sticks[i].end++;
