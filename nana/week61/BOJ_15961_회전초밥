@@ -1,0 +1,66 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+
+    private static int N, d, k, c;  // 접시의 수, 초밥의 가짓수, 연속해서 먹는 접시 수, 쿠폰 번호
+    private static int res;
+    private static int[] kind, belt;
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        d = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        c = Integer.parseInt(st.nextToken());
+
+        // 제일 마지막에 다다랐을때, 제일 처음 접시로 연결되기 때문에 k-1개만큼 더 잡음
+        // k개를 더하면 가장 처음 상태와 같아지기 때문에 k-1
+        belt = new int[N + k - 1];
+        kind = new int[d + 1];
+
+        for (int i = 0; i < N; i++) {
+            belt[i] = Integer.parseInt(br.readLine());
+        }
+
+        for (int i = 0; i < k - 1; i++) {
+            // k-1개만큼 마지막에 붙여주기
+            belt[N + i] = belt[i];
+        }
+
+        // 어차피 쿠폰은 무조건 쓰는 게 좋은 거 아닌가?
+        kind[c] = 1;
+        res = 1;
+
+        // 첫번째 윈도우
+        for (int i = 0; i < k; i++) {
+            // 쿠폰 포함 먹은 적이 없는 경우에만 종류++
+            if (kind[belt[i]] == 0) res++;
+            // 해당 초밥을 몇 번 먹었는지 세어야 함
+            kind[belt[i]]++;
+        }
+
+        // start = 가장 먼저 제거할 곳
+        // end = 가장 먼저 추가할 곳
+
+        int max = res;  // 반복문 내에서 가장 많이 먹은 횟수를 체크
+
+        for (int start = 0, end = k; end < belt.length; start++, end++) {
+
+            // start 위치의 초밥을 제거 했을 때, 먹은 횟수가 0이 되면 종류 수도 줄인다
+            kind[belt[start]]--;
+            if (kind[belt[start]] == 0) max--;
+
+            // end 위치의 초밥을 먹은 적 없을 때 종류를 늘리고, 먹었다는 체크를 해준다 (위와 반대)
+            if (kind[belt[end]] == 0) max++;
+            kind[belt[end]]++;
+
+            res = Math.max(res, max);
+        }
+
+        System.out.println(res);
+    }
+}
