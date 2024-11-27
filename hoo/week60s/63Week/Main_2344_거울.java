@@ -35,25 +35,28 @@ public class Main_2344_거울 {
                 if (j == M-1) box[i][j][2] = (2*N + 2*M)-1 - M - (rowHoleNumber++); // 가장 오른쪽 변의 좌 방향에 구멍 번호 저장
             }
         }
-
-//        for (int i = 0; i < N; i++) System.out.print(box[i][0][0] + " ");
-//        System.out.println();
-//        for (int j = 0; j < M; j++) System.out.print(box[N-1][j][1] + " ");
-//        System.out.println();
-//        for (int i = N-1; i >= 0; i--) System.out.print(box[i][M-1][2] + " ");
-//        System.out.println();
-//        for (int j = M-1; j >= 0; j--) System.out.print(box[0][j][3] + " ");
-//        System.out.println();
     }
 
     static void findExitHole() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < N; i++) sb.append(projectLight(i, 0, 0)).append(" ");   // 1. 왼쪽 변에서 우 방향으로 빛 발사
-        for (int j = 0; j < M; j++) sb.append(projectLight(N-1, j, 1)).append(" "); // 2. 아랫 변에서 상 방향으로 빛 발사
-        for (int i = N-1; i >= 0; i--) sb.append(projectLight(i, M-1, 2)).append(" ");  // 3. 오른쪽 변에서 좌 방향으로 빛 발사
-        for (int j = M-1; j >= 0; j--) sb.append(projectLight(0, j, 3)).append(" ");    // 4. 윗 변에서 하 뱡향으로 빛 발사
+        int holeNumber = 1; // 나갈 구멍 찾을 구멍 번호
+        int[] exitHole = new int[2*N + 2*M + 1];
+        for (int i = 0; i < N; i++) holeNumber = getHoleNumber(exitHole, holeNumber, i, 0, 0);
+        for (int j = 0; j < M; j++) holeNumber = getHoleNumber(exitHole, holeNumber, N - 1, j, 1);
+        for (int i = N-1; i >= 0; i--) holeNumber = getHoleNumber(exitHole, holeNumber, i, M - 1, 2);
+        for (int j = M-1; j >= 0; j--) holeNumber = getHoleNumber(exitHole, holeNumber, 0, j, 3);
 
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < exitHole.length; i++) sb.append(exitHole[i]).append(" ");
         System.out.println(sb);
+    }
+
+    static int getHoleNumber(int[] exitHole, int holeNumber, int i, int startCol, int startCol1) {
+        if (exitHole[holeNumber] != 0) return holeNumber+1;    // 이미 구멍 번호 찾았으면 찾을 구멍 번호만 +1해주고 건너 뜀
+
+        exitHole[holeNumber] = projectLight(i, startCol, startCol1);
+        exitHole[exitHole[holeNumber]] = holeNumber;    // 반대 구멍에도 정보 저장
+
+        return holeNumber+1;
     }
 
     static int projectLight(int startRow, int startCol, int dir) {
