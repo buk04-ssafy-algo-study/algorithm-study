@@ -44,13 +44,15 @@ public class Main_1911_흙길보수하기 {
         while (!ponds.isEmpty()) {
             nowPond = ponds.poll();
 
-            while (true) {
-                if (nowAxis >= nowPond[1]) break;   // 현재 웅덩이까지는 이미 덮었으면 종료
+            if (nowAxis >= nowPond[1]) continue;   // 현재 웅덩이까지는 이미 덮었으면 종료
 
-                if (nowAxis < nowPond[0]) nowAxis = nowPond[0]; // 웅덩이 시작위치보다 앞에 있으면 현재 웅덩이 덮으러 이동
-                nowAxis += L;
-                plateCount++;
-            }
+            if (nowAxis < nowPond[0]) nowAxis = nowPond[0]; // 웅덩이 시작위치보다 앞에 있으면 현재 웅덩이 덮으러 이동
+
+            int needPlate = (nowPond[1] - nowAxis)/L;
+            if ((nowPond[1]-nowAxis)%L != 0) needPlate++;   // 나누어떨어지지 않는 경우 널빤지 하나 추가
+            nowAxis += L*needPlate;
+            plateCount += needPlate;
+
         }
         System.out.println(plateCount);
     }
