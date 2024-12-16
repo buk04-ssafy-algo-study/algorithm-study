@@ -1,171 +1,145 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-class Point implements Comparable<Point> {
-    int r, c;
+class Point {
+    int r;
+    int c;
 
     public Point(int r, int c) {
         this.r = r;
         this.c = c;
     }
-
-    @Override
-    public String toString() {
-        return "Point{" +
-                "r=" + r +
-                ", c=" + c +
-                '}';
-    }
-
-    @Override
-    public int compareTo(Point o) {
-        if (this.r == o.r) return this.c - o.c;
-        return this.r - o.r;
-    }
 }
 
 public class BOJ_25565 {
-    public static void main(String[] args) throws IOException {
+    static int n, m, k, cnt;
+    static int[][] map;
+    static ArrayList<Point> points;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        cnt = 0;
+        map = new int[n][m];
+        points = new ArrayList<>();
 
-        int arr[][] = new int[N][M];
-        PriorityQueue<Point> togetherGrow = new PriorityQueue<Point>();
-
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; ++i) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < M; j++)
-                arr[i][j] = Integer.parseInt(st.nextToken());
-        }
-
-        boolean[][][] check = new boolean[N][M][2];
-        int rowExist = 0, colExist = 0, saveRow = 0, saveCol = 0;
-
-        for (int i = 0; i < N; i++) {
-            int cnt = 0;
-            int startIdx = -1; // 연속된 1의 시작 인덱스
-
-            for (int j = 0; j < M; j++) {
-                if (arr[i][j] == 1) {
-                    if (cnt == 0) startIdx = j; // 첫 번째 1이 나온 위치 기록
-                    cnt++; // 연속된 1의 개수 증가
-                } else {
-                    cnt = 0; // 1이 끊어지면 연속된 1의 개수 초기화
-                }
-
-                // 연속된 1의 개수가 K에 도달하면 check를 true로 설정
-                if (cnt >= K) {
-                    rowExist++;
-                    saveRow = i;
-                    for (int k = startIdx; k < startIdx + K; k++) {
-                        check[i][k][0] = true; // 연속된 1의 구간에 true 설정
-                    }
-                }
+            for (int j = 0; j < m; ++j) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+                if (map[i][j] == 1) cnt++;
             }
         }
-
-        for (int i = 0; i < M; i++) {
-            int cnt = 0;
-            int startIdx = -1; // 연속된 1의 시작 인덱스
-
-            for (int j = 0; j < N; j++) {
-                if (arr[j][i] == 1) {
-                    if (cnt == 0) startIdx = j; // 첫 번째 1이 나온 위치 기록
-                    cnt++; // 연속된 1의 개수 증가
-                } else {
-                    cnt = 0; // 1이 끊어지면 연속된 1의 개수 초기화
-                }
-
-                // 연속된 1의 개수가 K에 도달하면 check를 true로 설정
-                if (cnt >= K) {
-                    colExist++;
-                    saveCol = i;
-                    for (int k = startIdx; k < startIdx + K; k++) {
-                        check[k][i][1] = true; // 연속된 1의 구간에 true 설정
-                    }
-                }
-                if (K == 1 && rowExist == 1)
-                    colExist = 0;
-            }
+        
+        cnt = k * 2 - cnt;
+        
+        if (cnt == k) { // k칸 겹치는 경우
+            func1();
+        } else if (cnt == 1) { // 1칸 겹치는 경우
+            func2();
+        } else if (cnt > 1) { // 2칸 이상 겹치는 경우
+            func3();
         }
 
+        sb.append(cnt + "\n");
+        for (int i = 0; i < points.size(); ++i) 
+            sb.append((points.get(i).r + 1) + " " + (points.get(i).c + 1) + "\n");
 
-        if (rowExist >= 1 && colExist >= 1) { // 가로, 세로
-            if (rowExist >= K && colExist >= K) {
-                sb.append(0);
-            } else {
-                for (int i = 0; i < N; i++) {
-                    for (int j = 0; j < M; j++) {
-                        if (check[i][j][0] && check[i][j][1])
-                            togetherGrow.offer(new Point(i, j));
-                    }
-                }
-            }
-        } else if (rowExist >= 1 && colExist == 0) { // 가로만 있는 경우
-            if (rowExist == 1) { // 겹치는 경우
-                int cnt = 0;
-                int firstOneIdx = -1;
-                boolean firstOne = false;
-                for (int i = 0; i < M; i++) {
-                    if (arr[saveRow][i] == 1) {
-                        if (!firstOne) {
-                            firstOneIdx = i;
-                            firstOne = true;
-                        }
-                        cnt++;
-                    }
-                }
-
-                if (cnt >= 2 * K) {
-                    sb.append(0);
-                } else if (cnt >= K && cnt < 2 * K) {
-                    int start = K - (2 * K - cnt);
-                    for (int j = firstOneIdx + start; j < firstOneIdx + K; j++)
-                        togetherGrow.offer(new Point(saveRow, j));
-                }
-            } else if (rowExist >= 2) { // 안겹치는 경우
-                sb.append(0);
-            }
-        } else if (rowExist == 0 && colExist >= 1) { // 세로만 있는 경우
-            if (colExist == 1) { // 겹치는 경우
-                int cnt = 0;
-                int firstOneIdx = -1;
-                boolean firstOne = false;
-                for (int i = 0; i < N; i++) {
-                    if (arr[i][saveCol] == 1) {
-                        if (!firstOne) {
-                            firstOneIdx = i;
-                            firstOne = true;
-                        }
-                        cnt++;
-                    }
-                }
-                if (cnt >= 2 * K) {
-                    sb.append(0);
-                } else if (cnt >= K && cnt < 2 * K) {
-                    int start = K - (2 * K - cnt);
-                    for (int j = firstOneIdx + start; j < firstOneIdx + K; j++)
-                        togetherGrow.offer(new Point(j, saveCol));
-                }
-            } else if (colExist >= 2) { // 안겹치는 경우
-                sb.append(0);
-            }
-        }
-        if (togetherGrow.size() > 0) {
-            sb.append(togetherGrow.size() + "\n");
-            while (!togetherGrow.isEmpty()) {
-                Point p = togetherGrow.poll();
-                sb.append((p.r + 1) + " " + (p.c + 1) + "\n");
-            }
-        }
         System.out.print(sb);
+    }
+
+    public static void func1() { // k칸 모두 겹치는 경우
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (map[i][j] == 1) {
+                    boolean chk = false; // 방향
+
+                    points.add(new Point(i, j));
+                    if (j + 1 < m && map[i][j + 1] == 1) {
+                        chk = false;
+                    } else if (i + 1 < n && map[i + 1][j] == 1) {
+                        chk = true;
+                    }
+                    for (int l = 1; l < k; ++l) {
+                        if (chk) { // 세로 방향인 경우
+                            points.add(new Point(i + l, j));
+                        } else { // 가로 방향인 경우
+                            points.add(new Point(i, j + l));
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    public static void func2() { // 1칸 겹치는 경우
+        // 가로, 세로 한 칸 겹치는 경우
+        int[] delr = {0, 0, 1, -1}; // 우좌하상
+        int[] delc = {1, -1, 0, 0};
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (map[i][j] == 1) {
+                    int c = 0;
+                    for (int k = 0; k < 4; ++k) {
+                        int nextY = i + delr[k];
+                        int nextX = j + delc[k];
+
+                        if (nextY < 0 || nextX < 0 || nextY >= n || nextX >= m || map[nextY][nextX] == 0)
+                            continue;
+
+                        if (k < 2) { // 좌우 일 때 첫번째 비트 1로
+                            c |= 1;
+                        } else { // 상하 일 때 두번째 비트 2로
+                            c |= 2;
+                        }
+                    }
+
+                    if (c == 3) { // 좌우에서 하나, 상하에서 하나 있는 경우
+                        points.add(new Point(i, j));
+                        return;
+                    }
+                }
+            }
+        }
+
+        // 같은 방향에서 한 칸 겹치는 경우
+        func3();
+    }
+
+    public static void func3() { // 같은 방향에서 겹치는 경우
+        int c = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (map[i][j] == 1) {
+                    boolean chk = false;
+
+                    ++c;
+                    if (j + 1 < m && map[i][j + 1] == 1) {
+                        chk = false;
+                    } else if (i + 1 < n && map[i + 1][j] == 1) {
+                        chk = true;
+                    }
+                    for (int l = 1; l < k; ++l) {
+                        if (chk) { // 세로 방향
+                            if (k - c <= cnt)
+                                points.add(new Point(i + l, j));
+                            c++;
+                        } else { // 가로 방향
+                            if (k - c <= cnt)
+                                points.add(new Point(i, j + l));
+                            c++;
+                        }
+                    }
+                    return;
+                }
+            }
+        }
     }
 }
