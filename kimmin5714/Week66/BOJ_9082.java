@@ -13,15 +13,12 @@ public class BOJ_9082 {
         for (int t = 0; t < T; t++) {
             st = new StringTokenizer(br.readLine());
             int N = Integer.parseInt(st.nextToken());
-
             int[] nearCnt = new int[N];
-            char[] map = new char[N];
 
             String str = br.readLine();
             for (int i = 0; i < N; i++) nearCnt[i] = str.charAt(i) - '0';
 
             str = br.readLine();
-            for (int i = 0; i < N; i++) map[i] = str.charAt(i);
 
             int res = 0;
             for (int j = 0; j < N; j++) {
