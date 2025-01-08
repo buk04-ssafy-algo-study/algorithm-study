@@ -59,17 +59,17 @@ public class BOJ_2917 {
 
     private static void treeDijkstra() {
         while (!treeList.isEmpty()) { // 나무 기준으로 BFS
-            Node curr = treeList.poll();
+            Node cur = treeList.poll();
 
-            if (curr.d > dist[curr.r][curr.c]) continue; // 현재 칸에 저장된 거리가 더 작으면 처리할 필요x
+            if (cur.d > dist[cur.r][cur.c]) continue; // 현재 칸에 저장된 거리가 더 작으면 처리할 필요x
 
             for (int d = 0; d < 4; d++) {
-                int nr = curr.r + dr[d];
-                int nc = curr.c + dc[d];
+                int nr = cur.r + dr[d];
+                int nc = cur.c + dc[d];
 
                 if (nr < 0 || nr >= R || nc < 0 || nc >= C || map[nr][nc] == '+') continue;
-                if (dist[nr][nc] > curr.d + 1) { // 지금 거리 +1과 다음 칸 거리 비교
-                    dist[nr][nc] = curr.d + 1;
+                if (dist[nr][nc] > cur.d + 1) { // 지금 거리 +1과 다음 칸 거리 비교
+                    dist[nr][nc] = cur.d + 1;
                     treeList.offer(new Node(nr, nc, dist[nr][nc]));
                 }
             }
