@@ -1,0 +1,72 @@
+import java.util.*;
+
+class Main {
+
+    private static int N, target, res_x, res_y;
+    private static int num;
+    private static int[][] map;
+    private static int[][] d = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    private static void snail() {
+
+        int x = 0, y = 0;
+        int dir = 0;
+
+        while (num != 0) {
+
+            map[x][y] = num;
+
+            int nx = x + d[dir][0];
+            int ny = y + d[dir][1];
+
+            if (nx < 0 || ny < 0 || nx >= N || ny >= N || map[nx][ny] > 0) {
+                // 범위를 벗어나거나 이미 숫자가 있다면 방향 바꿈
+                dir = (dir + 1) % 4;
+                // 다음 반복문에서의 x, y 값도 바뀜
+                x = x + d[dir][0];
+                y = y + d[dir][1];
+            } else {
+                x = nx;
+                y = ny;
+            }
+
+            num--;
+        }
+
+    }
+
+    private static void print() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (map[i][j] == target) {
+                    res_x = i + 1;
+                    res_y = j + 1;
+                }
+                sb.append(map[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+        sb.append(res_x).append(" ").append(res_y);
+
+        System.out.println(sb);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        N = sc.nextInt();
+        target = sc.nextInt();
+
+        map = new int[N][N];
+        res_x = 0;
+        res_y = 0;
+
+        // 마지막 숫자 = 가장자리 부터 시작
+        num = N * N;
+
+        snail();
+        print();
+    }
+}

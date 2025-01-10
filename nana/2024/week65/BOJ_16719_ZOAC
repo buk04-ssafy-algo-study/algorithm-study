@@ -1,0 +1,49 @@
+import java.io.*;
+
+class Main {
+
+    private static String str;
+    private static int size;
+    private static boolean[] isPrinted;
+    private static StringBuilder sb;
+
+    private static void find(int left, int right) {
+
+        if(left>right) return;
+
+        int index = left;
+
+        for (int i = left; i <= right; i++) {
+            if (str.charAt(i) - 'A' < str.charAt(index) - 'A') {
+                // 가장 작은 알파벳으로 인덱스 변경
+                index = i;
+            }
+        }
+
+        isPrinted[index] = true;
+
+        for (int i = 0; i < size; i++) {
+            // true 값인 알파벳만 출력
+            if (isPrinted[i]) sb.append(str.charAt(i));
+        }
+        sb.append("\n");
+
+        find(index + 1, right);   // 찾은 글자 오른쪽 검사
+        find(left, index - 1);    // 찾은 글자 왼쪽 검사
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        sb = new StringBuilder();
+
+        str = br.readLine();
+        size = str.length();
+
+        isPrinted = new boolean[size];
+
+        find(0, size - 1);
+
+        System.out.println(sb);
+    }
+}
