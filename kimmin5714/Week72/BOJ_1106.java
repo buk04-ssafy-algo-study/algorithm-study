@@ -29,7 +29,7 @@ public class BOJ_1106 {
         }
 
         int res = INF;
-        for(int i=C;i<dp.length;i++) { // C명 ~ (C명+100) 중 가장 적은 비용 찾기
+        for (int i = C; i < dp.length; i++) { // C명 ~ (C명+100) 중 가장 적은 비용 찾기
             res = Math.min(res, dp[i]);
         }
         System.out.print(res);

@@ -3,8 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Edge implements Comparable<Edge>{
-    int a,b,c;
+class Edge implements Comparable<Edge> {
+    int a, b, c;
 
     public Edge(int a, int b, int c) {
         this.a = a;
@@ -17,6 +17,7 @@ class Edge implements Comparable<Edge>{
         return this.c - o.c;
     }
 }
+
 public class BOJ_1647 {
     private static int[] arr;
 
@@ -28,19 +29,19 @@ public class BOJ_1647 {
         int M = Integer.parseInt(st.nextToken());
         List<Edge> edgeList = new ArrayList<>();
 
-        for(int i=0;i<M;i++) {
+        for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
 
-            edgeList.add(new Edge(a,b,c));
+            edgeList.add(new Edge(a, b, c));
         }
 
         Collections.sort(edgeList); // 유지 비용 오름차순 정렬
 
-        arr = new int[N+1];
-        for(int i=1;i<=N;i++){
+        arr = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
             arr[i] = i;
         }
 
@@ -48,10 +49,10 @@ public class BOJ_1647 {
         int maxCost = 0;
 
         // 싸이클 생기지 않도록 노드 모두 연결
-        for(int i=0;i<edgeList.size();i++) {
+        for (int i = 0; i < edgeList.size(); i++) {
             Edge cur = edgeList.get(i);
 
-            if(find(cur.a) != find(cur.b)) { // 싸이클 되는 경우 제외
+            if (find(cur.a) != find(cur.b)) { // 싸이클 되는 경우 제외
                 res += cur.c;
                 union(cur.a, cur.b);
 
@@ -65,18 +66,17 @@ public class BOJ_1647 {
         int aParent = find(a);
         int bParent = find(b);
 
-        if(aParent != bParent) {
-            if(aParent < bParent) {
+        if (aParent != bParent) {
+            if (aParent < bParent) {
                 arr[bParent] = aParent;
-            }
-            else {
+            } else {
                 arr[aParent] = bParent;
             }
         }
     }
 
     private static int find(int a) {
-        if(arr[a] == a) return a;
+        if (arr[a] == a) return a;
         return arr[a] = find(arr[a]);
     }
 }
