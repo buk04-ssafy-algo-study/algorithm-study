@@ -1,7 +1,7 @@
 -- 코드를 입력하세요
 select ugb.writer_id user_id, ugu.nickname, ugb.total_sales
 from used_goods_user ugu
-join (select writer_id, sum(price) total_sales, status
+join (select writer_id, sum(price) total_sales
         from used_goods_board
         where status = "DONE"
         group by writer_id) ugb
