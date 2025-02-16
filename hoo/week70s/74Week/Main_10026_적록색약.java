@@ -52,17 +52,14 @@ public class Main_10026_적록색약 {
                 nextCol = now[1] + dirCol[d];
 
                 if (isOuted(nextRow, nextCol) || isChecked[nextRow][nextCol][mode]) continue;
-                if (mode == 0) { // 정상인인 경우
-                    if (colors[now[0]][now[1]] != colors[nextRow][nextCol]) continue;
-
-                    q.offer(new int[] {nextRow, nextCol});
-                    isChecked[nextRow][nextCol][0] = true;
-                } else { // 적록색약인 경우
+                if (mode == 0 && (colors[now[0]][now[1]] != colors[nextRow][nextCol]) ) continue; // 정상인인 경우
+                else { // 적록색약인 경우
                     if ( (colors[now[0]][now[1]] == 'R' || colors[now[0]][now[1]] == 'G') && colors[nextRow][nextCol] == 'B' ) continue;
                     else if ( colors[now[0]][now[1]] == 'B' && colors[now[0]][now[1]] != colors[nextRow][nextCol] ) continue;
-                    q.offer(new int[] {nextRow, nextCol});
-                    isChecked[nextRow][nextCol][1] = true;
                 }
+
+                q.offer(new int[] {nextRow, nextCol});
+                isChecked[nextRow][nextCol][mode] = true;
             }
         }
 
