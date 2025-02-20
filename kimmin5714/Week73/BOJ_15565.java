@@ -18,14 +18,14 @@ public class BOJ_15565 {
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
-            if (arr[i] == 1) ryanList.add(i);
+            if (arr[i] == 1) ryanList.add(i); // 라이언 인덱스를 저장
         }
 
-        int res = 1000000, left = 0, right = K - 1;
+        int res = 1000000, left = 0, right = K - 1; // K개 이상이어야하므로 K만큼 차이나는 투포인터 설정
 
-        if (ryanList.size() < K) res = -1;
+        if (ryanList.size() < K) res = -1; // K개가 안되면 불가능
         else {
-            while (right < ryanList.size()) {
+            while (right < ryanList.size()) { // 투포인터 옮겨가며 최소 집합 크기 갱신
                 res = Math.min(res, ryanList.get(right) - ryanList.get(left) + 1);
                 left++;
                 right++;
