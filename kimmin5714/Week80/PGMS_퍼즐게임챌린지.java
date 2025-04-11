@@ -1,6 +1,5 @@
 class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
-        int answer = 0;
         int right = 0;
         int left = 1;
         for(int i=0;i<diffs.length;i++) { // 숙련도 최댓값 찾기
@@ -9,19 +8,18 @@ class Solution {
 
         // 이분탐색
         int mid = -1;
-        while(left<=right) {
+        while(left<right) {
             mid = (right+left)/2;
 
             if(calculateLevel(mid,diffs,times,limit)){ // 가능하면 더 작은 범위 탐색
-                answer = mid;
-                right = mid-1;
+                right = mid;
             }
             else { // 불가능하면 더 큰 범위 탐색
                 left = mid+1;
             }
         }
 
-        return answer;
+        return right;
     }
     public boolean calculateLevel(int level, int[] diffs, int[] times, long limit) {
         long time = 0;
