@@ -37,6 +37,8 @@ public class BOJ_21939 {
             problemMap.put(p, prob);
         }
 
+
+
         int M = Integer.parseInt(br.readLine());
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
