@@ -24,7 +24,7 @@ public class BOJ_13913 {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
         answer = 0;
-        int[] parents = new int[100000+1]; // 부모 위치 저장
+        int[] parents = new int[100000+1]; // 이전 위치 저장
 
         if (N > K) { // N이 K보다 작으면 -1 사용했을 때만 가능
             sb.append(N-K+"\n");
