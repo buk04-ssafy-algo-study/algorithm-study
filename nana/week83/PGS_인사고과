@@ -1,0 +1,36 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] scores) {
+        int rank = 1;   // 완호의 석차
+        
+        int totalScore = scores[0][0] + scores[0][1];   // 완호의 점수
+        int maxScore = 0;   // 동료 평가 점수를 저장할 변수
+        int wScoreA = scores[0][0];
+        int wScoreB = scores[0][1];
+        
+        // 근무 태도 점수 0, 동료 평가 점수 1
+        // [0]은 내림차순으로 정렬, [1]은 오름차순으로 정렬
+        // [0]의 배열을 순차적으로 돌면서 바로 앞의 [1]의 수보다 작으면 인센티브를 못 받음
+        Arrays.sort(scores, (a, b) -> {
+            if (a[0] == b[0]) return a[1] - b[1]; // 동료평가 오름차순
+            return b[0] - a[0]; // 근무태도 내림차순
+        });
+        
+        for(int[] score : scores){
+            if(maxScore<=score[1]){
+                maxScore=score[1];
+                if(score[0]+score[1] > totalScore){
+                    rank++;
+                }
+            } else {    // 두 점수가 모두 다른 동료보다 낮은 경우 
+                if(wScoreA == score[0] && wScoreB == score[1]){
+                    return -1;  // 만약 이 점수가 완호의 점수라면 완호는 인센 못 받기 때문에 -1
+                }
+            }
+            
+        }
+        
+        return rank;
+    }
+}
