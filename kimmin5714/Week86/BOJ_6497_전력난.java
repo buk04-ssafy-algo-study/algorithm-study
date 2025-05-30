@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class BOJ_6497 {
+public class BOJ_6497_전력난 {
     private static int answer, parents[], total, mstSum;
 
     public static void main(String[] args) throws IOException {

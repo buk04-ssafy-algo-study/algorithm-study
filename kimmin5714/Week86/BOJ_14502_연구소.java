@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class BOJ_14502 {
+public class BOJ_14502_연구소 {
     public static List<int[]> blank, virus;
     public static int[][] arr, copy;
     public static int answer, wall[];
