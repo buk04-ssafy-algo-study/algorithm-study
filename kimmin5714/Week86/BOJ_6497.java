@@ -35,7 +35,7 @@ public class BOJ_6497 {
                 graph.add(new int[]{x, y, z});
             }
 
-            // 가중치 내림차순 정렬
+            // 가중치 오름차순 정렬
             Collections.sort(graph, (o1, o2) -> o1[2] - o2[2]);
 
             parents = new int[n];
